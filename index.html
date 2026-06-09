@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Développement & Ingénierie Appliquée — Créez votre première application</title>
-    <meta name="description" content="En 3 jours, passez de zéro à avoir votre application déployée sur des serveurs professionnels. Coaching personnalisé, 5 places par session.">
+    <title>Bootcamp Ingénierie Applicative — De Zéro à Déployé en 3 Jours</title>
+    <meta name="description" content="En 3 jours, devenez opérateur tech autonome. Infrastructure clé en main, coaching sur-mesure, 5 places max. Repartez avec VOTRE application en production.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -45,8 +45,7 @@
                 linear-gradient(rgba(124, 58, 237, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(124, 58, 237, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
-            z-index: 0;
-            pointer-events: none;
+            z-index: 0; pointer-events: none;
         }
 
         .bg-glow {
@@ -140,17 +139,19 @@
         }
 
         .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--accent-light), var(--gold-light));
+            background: linear-gradient(135deg, var(--accent-light), var(--gold));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .hero-sub {
             font-size: clamp(1.1rem, 2vw, 1.35rem);
-            color: var(--text-secondary); max-width: 700px; margin: 0 auto 48px;
+            color: var(--text-secondary); max-width: 720px; margin: 0 auto 48px;
             line-height: 1.8;
             animation: fadeInUp 0.6s ease 0.2s both;
         }
+
+        .hero-sub strong { color: var(--text-primary); font-weight: 600; }
 
         .hero-cta-group {
             display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
@@ -217,9 +218,38 @@
         }
 
         .section-desc {
-            color: var(--text-secondary); max-width: 600px; margin: 16px auto 0;
+            color: var(--text-secondary); max-width: 650px; margin: 16px auto 0;
             font-size: 1.1rem; line-height: 1.7;
         }
+
+        /* === PROMISE BANNER === */
+        .promise-banner {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(245, 158, 11, 0.05));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promise-banner::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+        }
+
+        .promise-banner h3 {
+            font-size: 1.5rem; font-weight: 800; margin-bottom: 12px;
+        }
+
+        .promise-banner p {
+            font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .promise-banner p strong { color: var(--gold-light); font-weight: 700; }
 
         /* === AVANTAGES === */
         .advantages-grid {
@@ -267,6 +297,10 @@
             color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;
         }
 
+        .advantage-card .highlight {
+            display: inline; color: var(--gold-light); font-weight: 600;
+        }
+
         /* === PROGRAMME === */
         .programme {
             background: var(--bg-secondary);
@@ -281,7 +315,7 @@
         }
 
         .day-tab {
-            flex: 1; min-width: 140px;
+            flex: 1; min-width: 160px;
             padding: 16px 24px;
             background: transparent;
             border: 1px solid var(--border);
@@ -374,13 +408,61 @@
             border: 1px solid rgba(124, 58, 237, 0.2);
         }
 
+        /* === ROI COMPARISON === */
+        .roi-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .roi-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 36px 28px;
+            border: 1px solid var(--border);
+        }
+
+        .roi-card.highlight {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 40px var(--accent-glow);
+            position: relative;
+        }
+
+        .roi-card .roi-label {
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 20px;
+        }
+
+        .roi-card .roi-label.bad { color: var(--danger); }
+        .roi-card .roi-label.good { color: var(--success); }
+
+        .roi-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+        .roi-card .roi-price { font-size: 2rem; font-weight: 900; margin-bottom: 20px; }
+
+        .roi-card .roi-price.bad-price { color: var(--danger); }
+        .roi-card .roi-price.good-price {
+            background: linear-gradient(135deg, var(--accent-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .roi-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            margin-bottom: 12px; font-size: 0.92rem;
+        }
+
+        .roi-item .icon-x { color: var(--danger); font-weight: 700; min-width: 20px; }
+        .roi-item .icon-check { color: var(--success); font-weight: 700; min-width: 20px; }
+        .roi-item span { color: var(--text-secondary); }
+
         /* === TARIF === */
         .pricing-section {
             background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
         }
 
         .pricing-card {
-            max-width: 560px; margin: 0 auto;
+            max-width: 580px; margin: 0 auto;
             background: var(--bg-card);
             border: 2px solid var(--accent);
             border-radius: 24px;
@@ -442,6 +524,7 @@
         }
 
         .pricing-feature span { color: var(--text-secondary); font-size: 0.95rem; }
+        .pricing-feature strong { color: var(--text-primary); }
 
         .pricing-guarantee {
             margin-top: 24px;
@@ -450,6 +533,15 @@
             border: 1px solid rgba(245, 158, 11, 0.2);
             border-radius: 12px;
             font-size: 0.9rem; color: var(--gold-light);
+        }
+
+        .pricing-bonus {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            font-size: 0.9rem; color: #6ee7b7;
         }
 
         /* === FAQ === */
@@ -504,7 +596,7 @@
 
         .cta-final p {
             color: var(--text-secondary); font-size: 1.15rem;
-            max-width: 500px; margin: 0 auto 40px;
+            max-width: 550px; margin: 0 auto 40px;
         }
 
         .places-counter {
@@ -546,6 +638,8 @@
             .pricing-card { padding: 40px 28px; }
             .pricing-amount { font-size: 3rem; }
             section { padding: 64px 0; }
+            .roi-grid { grid-template-columns: 1fr; }
+            .promise-banner { padding: 32px 24px; }
         }
 
         /* === SCROLL ANIMATIONS === */
@@ -584,22 +678,22 @@
     <div class="container">
         <div class="hero-badge">
             <span class="dot"></span>
-            Prochaine session — Inscriptions ouvertes
+            Bootcamp — Prochaine session ouverte
         </div>
-        <h1>Créez votre<br><span class="gradient">première application</span><br>en 3 jours</h1>
+        <h1>De zéro à<br><span class="gradient">déployé en 72h</span></h1>
         <p class="hero-sub">
-            De zéro à une application déployée sur des serveurs professionnels.
-            Coaching personnalisé, infrastructure clé en main, et une communauté
-            d'ingénieurs qui continue après la formation.
+            Pas un certificat. Pas un cours magistral. Un <strong>laboratoire intensif</strong> où vous repartez avec
+            <strong>votre application fonctionnelle</strong>, sécurisée par VPN, et automatisée —
+            sur une infrastructure professionnelle clé en main.
         </p>
         <div class="hero-cta-group">
-            <a href="#inscription" class="btn-primary">⚡ Réserver ma place — 5 places</a>
+            <a href="#inscription" class="btn-primary">⚡ Réserver — 5 places max</a>
             <a href="#programme" class="btn-secondary">📅 Voir le programme</a>
         </div>
         <div class="hero-stats">
             <div class="hero-stat">
-                <div class="number">3</div>
-                <div class="label">Jours de formation</div>
+                <div class="number">72h</div>
+                <div class="label">Pour devenir autonome</div>
             </div>
             <div class="hero-stat">
                 <div class="number">5</div>
@@ -613,44 +707,59 @@
     </div>
 </section>
 
+<!-- PROMESSE -->
+<section id="promesse">
+    <div class="container">
+        <div class="promise-banner reveal">
+            <h3>🎯 Ce n'est pas une formation. C'est un <span class="gradient" style="background:linear-gradient(135deg,var(--accent-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">accès à un écosystème</span>.</h3>
+            <p>Vous ne venez pas apprendre à coder. Vous venez <strong>créer, déployer et opérer</strong> votre propre solution technique — avec des serveurs, des outils et un coach qui ne vous lâche pas.</p>
+        </div>
+    </div>
+</section>
+
 <!-- AVANTAGES -->
 <section id="avantages">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Pourquoi nous choisir</div>
-            <h2 class="section-title">Ce qui change tout</h2>
-            <p class="section-desc">Pas un cours en ligne. Pas un tutoriel YouTube. Une expérience complète où vous repartez avec une application en production.</p>
+            <div class="section-tag">Les 7 piliers</div>
+            <h2 class="section-title">Pourquoi ça change tout</h2>
+            <p class="section-desc">Pas un MOOC. Pas un tutoriel. Un accès complet à une infrastructure professionnelle et un mentorat individuel.</p>
         </div>
         <div class="advantages-grid">
             <div class="advantage-card reveal">
+                <div class="advantage-icon">🚀</div>
+                <h3>Résultat concret en 3 jours</h3>
+                <p>Repartez avec <span class="highlight">VOTRE application fonctionnelle</span>, hébergée, sécurisée et automatisée — pas juste un certificat. C'est un laboratoire intensif, pas un cours magistral.</p>
+            </div>
+            <div class="advantage-card reveal">
                 <div class="advantage-icon">🖥️</div>
-                <h3>Serveurs & Infrastructure prêts</h3>
-                <p>VPS dédié, Docker, Nginx, SSL, Cloudflare, base de données — tout est déjà en place. Vous ne perdez pas 2 jours à configurer un serveur. Vous commencez directement sur une infrastructure professionnelle.</p>
+                <h3>Infrastructure clé en main</h3>
+                <p>Serveurs dédiés, Docker, Nginx, SSL, Cloudflare, base de données — tout est déjà en place. <span class="highlight">Zero configuration, zero frais cachés.</span> Vous ne perdez pas 2 jours à configurer un serveur.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🎯</div>
-                <h3>Coaching ultra-personnalisé</h3>
-                <p>5 places maximum. Chaque participant est suivi individuellement. Pas de salle de 50 personnes où vous êtes invisible. Ici, on connaît votre nom, votre projet, et on ne vous lâche pas.</p>
-            </div>
-            <div class="advantage-card reveal">
-                <div class="advantage-icon">🚀</div>
-                <h3>Création concrète dès le Jour 1</h3>
-                <p>Zéro théorie inutile. Vous concevez, vous construisez, vous déployez. À la fin du 3ème jour, votre application est en ligne et fonctionnelle. Pas un prototype — un vrai produit déployé.</p>
+                <h3>Coaching sur-mesure</h3>
+                <p>5 places maximum. C'est du <span class="highlight">sur-mesure, pas du suivi de masse.</span> Vous avez un mentor technique à disposition pendant 72h. On connaît votre nom, votre projet, et on ne vous lâche pas.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🤖</div>
-                <h3>IA intégrée à vos projets</h3>
-                <p>Intégrez l'intelligence artificielle dans vos applications — chatbots, analyse de documents, assistants intelligents. Vos apps ne sont pas statiques, elles pensent.</p>
+                <h3>IA & Stack employable</h3>
+                <p>Maîtrisez les outils que les entreprises recherchent : déploiement d'applications, intégration IA, sécurisation réseau. <span class="highlight">Architecture simplifiée pour focus sur le résultat.</span></p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🔒</div>
-                <h3>VPN & Automatisations inclus</h3>
-                <p>Créez votre propre VPN, automatisez vos emails, documents et workflows avec Google Workspace. Les outils qui font la différence au quotidien.</p>
+                <h3>VPN & Automatisations GWS</h3>
+                <p>Créez votre VPN, automatisez emails, documents et workflows Google Workspace. <span class="highlight">De l'ingénierie opérationnelle,</span> pas du bricolage.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">👥</div>
-                <h3>Communauté d'ingénieurs</h3>
-                <p>Après la formation, vous n'êtes pas seul. Accès à la communauté, partage de ressources, entraide sur les projets, et mise à jour continue des outils et méthodes.</p>
+                <h3>Communauté & réseau</h3>
+                <p>Intégrez une communauté d'opérateurs tech. Accès privilégié aux ressources, partage d'automatisations, et <span class="highlight">support continu après la formation.</span> Un actif à vie.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">💰</div>
+                <h3>ROI immédiat</h3>
+                <p>100 000 FCFA pour devenir autonome en 3 jours. <span class="highlight">Comparez avec 6 mois à 500 000 FCFA</span> qui ne donnent ni infrastructure ni projet déployé. Vous repartez avec un produit opérationnel.</p>
             </div>
         </div>
     </div>
@@ -660,9 +769,9 @@
 <section id="programme">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Programme détaillé</div>
-            <h2 class="section-title">3 jours pour tout changer</h2>
-            <p class="section-desc">Chaque journée est conçue pour vous faire progresser concrètement. Du concept au déploiement.</p>
+            <div class="section-tag">Programme intensif</div>
+            <h2 class="section-title">72h pour tout changer</h2>
+            <p class="section-desc">Chaque journée est conçue pour vous faire progresser concrètement. Du concept au déploiement en production.</p>
         </div>
         <div class="programme reveal">
             <div class="day-tabs">
@@ -681,30 +790,30 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Serveurs, Docker, bases de données, déploiement</span>
+                            <span>Découvrir l'infrastructure professionnelle mise à disposition</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Choisir et concevoir son projet personnel</span>
+                            <span>Concevoir et planifier son projet personnel</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Setup de l'environnement de travail</span>
+                            <span>Setup de l'environnement de développement</span>
                         </div>
                     </div>
                     <div class="day-half">
-                        <h4><span class="icon">☀️</span> Après-midi — Première Application</h4>
+                        <h4><span class="icon">☀️</span> Après-midi — Premier Déploiement</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Structure et architecture de votre application</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Développement guidé avec coaching individuel</span>
+                            <span>Développement itératif avec coaching individuel</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Premier déploiement en ligne</span>
+                            <span><strong>Premier déploiement en ligne</strong> — votre app est live</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
@@ -728,11 +837,11 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Intégration de l'IA (Ollama, chatbots)</span>
+                            <span>Intégration de l'intelligence artificielle</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Sécurité et bonnes pratiques</span>
+                            <span>Sécurité et bonnes pratiques de déploiement</span>
                         </div>
                     </div>
                     <div class="day-half">
@@ -743,7 +852,7 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Intégrer les fonctionnalités clés</span>
+                            <span>Intégrer les fonctionnalités clés de votre projet</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
@@ -751,7 +860,7 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Optimisation et préparation au déploiement</span>
+                            <span>Optimisation et préparation au déploiement final</span>
                         </div>
                     </div>
                 </div>
@@ -775,7 +884,7 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Connexion entre vos outils et votre app</span>
+                            <span>Connexion entre vos outils et votre application</span>
                         </div>
                     </div>
                     <div class="day-half">
@@ -786,15 +895,15 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Configuration domaine et SSL</span>
+                            <span>Configuration domaine, SSL et sécurité</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Lancement officiel de votre application</span>
+                            <span><strong>Lancement officiel de votre application</strong></span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Intégration à la communauté d'ingénieurs</span>
+                            <span>Intégration à la communauté d'opérateurs tech</span>
                         </div>
                     </div>
                 </div>
@@ -807,18 +916,18 @@
 <section id="projets">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Ce que vous pouvez créer</div>
+            <div class="section-tag">Ce que vous créerez</div>
             <h2 class="section-title">Projets réalisables</h2>
-            <p class="section-desc">Voici des exemples concrets d'applications que vous serez capable de créer pendant la formation.</p>
+            <p class="section-desc">Des exemples concrets d'applications que vous serez capable de déployer pendant les 3 jours.</p>
         </div>
         <div class="projects-grid">
             <div class="project-card reveal">
                 <span class="project-emoji">🤖</span>
                 <h3>Chatbot WhatsApp IA</h3>
-                <p>Un agent conversationnel intelligent sur WhatsApp pour votre business — prise de commandes, FAQ, réservations, support client automatisé.</p>
+                <p>Un agent conversationnel intelligent sur WhatsApp — prise de commandes, FAQ, réservations, support client automatisé pour votre business.</p>
                 <div class="project-techs">
                     <span class="project-tech">WhatsApp API</span>
-                    <span class="project-tech">Ollama</span>
+                    <span class="project-tech">IA</span>
                     <span class="project-tech">FastAPI</span>
                     <span class="project-tech">Supabase</span>
                 </div>
@@ -826,7 +935,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">🌐</span>
                 <h3>Application Web complète</h3>
-                <p>Une application web avec authentification, base de données, tableau de bord — pour gérer un business, une école, une église ou tout autre organisme.</p>
+                <p>Une application web avec authentification, base de données, tableau de bord — pour gérer un business, une école, une église ou tout organisme.</p>
                 <div class="project-techs">
                     <span class="project-tech">Django</span>
                     <span class="project-tech">PostgreSQL</span>
@@ -837,7 +946,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">🔒</span>
                 <h3>VPN personnalisé</h3>
-                <p>Votre propre VPN avec navigation sans consommation de données. Configuré spécifiquement pour votre opérateur et vos besoins.</p>
+                <p>Votre propre VPN avec navigation optimisée. Configuré spécifiquement pour votre opérateur et vos besoins — comme le font les vraies structures IT.</p>
                 <div class="project-techs">
                     <span class="project-tech">SSH Tunnel</span>
                     <span class="project-tech">Proxy</span>
@@ -848,7 +957,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">⚙️</span>
                 <h3>Automatisations GWS</h3>
-                <p>Automatisez vos emails, vos Google Sheets, vos documents. Gagnez des heures chaque semaine grâce à des workflows intelligents.</p>
+                <p>Automatisez vos emails, Google Sheets, documents — gagnez des heures chaque semaine grâce à des workflows professionnels.</p>
                 <div class="project-techs">
                     <span class="project-tech">Google Workspace</span>
                     <span class="project-tech">n8n</span>
@@ -858,7 +967,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">📱</span>
                 <h3>Application de service</h3>
-                <p>Une app de réservation, de livraison, de gestion de stock — le type d'application que les businesses locaux ont besoin au Gabon.</p>
+                <p>Une app de réservation, livraison ou gestion de stock — le type d'application dont les businesses locaux ont besoin au Gabon.</p>
                 <div class="project-techs">
                     <span class="project-tech">Full-stack</span>
                     <span class="project-tech">Auth</span>
@@ -872,10 +981,45 @@
                 <p>Un outil qui extrait, analyse et traite automatiquement vos documents grâce à l'OCR et l'IA — factures, contrats, formulaires.</p>
                 <div class="project-techs">
                     <span class="project-tech">OCR</span>
-                    <span class="project-tech">Ollama</span>
+                    <span class="project-tech">IA</span>
                     <span class="project-tech">Python</span>
                     <span class="project-tech">API</span>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROI COMPARISON -->
+<section id="roi">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Comparaison</div>
+            <h2 class="section-title">Le calcul est simple</h2>
+            <p class="section-desc">Comparez ce que vous obtenez avec notre bootcamp vs une formation classique.</p>
+        </div>
+        <div class="roi-grid">
+            <div class="roi-card reveal">
+                <div class="roi-label bad">❌ Formation classique</div>
+                <h3>6 mois de cours</h3>
+                <div class="roi-price bad-price">500 000+ FCFA</div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Théorie sans projet concret</span></div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Pas d'infrastructure fournie</span></div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Pas de VPN ni d'automatisations</span></div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Suivi de masse, coach indisponible</span></div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Aucune application déployée à la fin</span></div>
+                <div class="roi-item"><span class="icon-x">✗</span> <span>Pas de communauté ni de suivi</span></div>
+            </div>
+            <div class="roi-card highlight reveal">
+                <div class="roi-label good">✅ Bootcamp Gosen Academy</div>
+                <h3>3 jours intensifs</h3>
+                <div class="roi-price good-price">100 000 FCFA</div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>Application déployée en production</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>Infrastructure professionnelle incluse</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>VPN + automatisations GWS</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>5 places max — coaching individuel</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>Résultat garanti ou remboursement Jour 1</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>Communauté + 1 mois accès serveurs</span></div>
             </div>
         </div>
     </div>
@@ -887,29 +1031,29 @@
         <div class="section-header reveal">
             <div class="section-tag">Investissement</div>
             <h2 class="section-title">Un prix, tout compris</h2>
-            <p class="section-desc">Pas de frais cachés. Pas d'abonnement serveur. Pas de surprise.</p>
+            <p class="section-desc">Infrastructure + coaching + communauté. Zero frais caché. Zero surprise.</p>
         </div>
         <div class="pricing-card reveal">
             <div class="pricing-popular">5 places</div>
-            <div class="pricing-label">Formation complète</div>
+            <div class="pricing-label">Bootcamp Ingénierie Applicative</div>
             <div class="pricing-amount">100 000</div>
             <div class="pricing-currency">FCFA — 3 jours présentiel</div>
             <div class="pricing-features">
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>3 jours de formation en présentiel</span>
+                    <span>3 jours de bootcamp intensif en présentiel</span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>Accès serveurs VPS + infrastructure complète</span>
+                    <span>Serveurs VPS + infrastructure <strong>clé en main</strong></span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>Coaching personnalisé (5 places max)</span>
+                    <span>Coaching sur-mesure — <strong>5 places maximum</strong></span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>Votre application déployée en production</span>
+                    <span>Votre <strong>application déployée en production</strong></span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
@@ -917,7 +1061,7 @@
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>Accès communauté d'ingénieurs</span>
+                    <span>Communauté d'opérateurs tech à vie</span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
@@ -925,11 +1069,18 @@
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
+                    <span><strong>1 mois d'accès serveurs</strong> post-formation</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
                     <span>Coaching de suivi post-formation</span>
                 </div>
             </div>
             <div class="pricing-guarantee">
-                🛡️ <strong>Garantie satisfaction</strong> — Si votre application n'est pas déployée à la fin du Jour 3, on continue jusqu'à ce que ça marche.
+                🛡️ <strong>Garantie Jour 1</strong> — Si à la fin du premier jour vous n'avez pas déployé votre première architecture, remboursement intégral.
+            </div>
+            <div class="pricing-bonus">
+                🎁 <strong>Bonus</strong> — 1 mois d'accès aux serveurs post-formation + intégration communauté à vie.
             </div>
             <a href="#inscription" class="btn-primary" style="margin-top: 32px; display: inline-flex;">⚡ Réserver ma place</a>
         </div>
@@ -950,7 +1101,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Non. La formation est conçue pour les débutants complets. Notre méthodologie d'ingénierie moderne vous permet de vous concentrer sur la conception et l'architecture de votre projet — l'implémentation suit naturellement.</div>
+                    <div class="faq-answer-inner">La formation est accessible aux débutants motivés, encadrés par un coach. Notre méthodologie d'ingénierie moderne vous permet de vous concentrer sur la conception et l'architecture — l'implémentation suit naturellement. Pas besoin de savoir coder traditionnellement.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -959,7 +1110,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Un ordinateur portable (Windows, Mac ou Linux) et une connexion internet. Tout le reste — serveurs, outils, infrastructure — est déjà prêt pour vous.</div>
+                    <div class="faq-answer-inner">Un ordinateur portable (Windows, Mac ou Linux) et une connexion internet. Tout le reste — serveurs, outils, infrastructure professionnelle — est déjà prêt pour vous. Zero configuration de votre côté.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -968,7 +1119,16 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Oui, garanti. Votre application sera déployée en production sur un serveur professionnel, accessible publiquement. Si ce n'est pas le cas à la fin du Jour 3, on continue avec vous jusqu'à ce que ça marche.</div>
+                    <div class="faq-answer-inner">Garanti. Votre application sera déployée en production sur un serveur professionnel, accessible publiquement. Si à la fin du Jour 1 vous n'avez pas déployé votre première architecture, remboursement intégral. Si ce n'est pas fini au Jour 3, on continue avec vous jusqu'à ce que ça marche.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Quelle est la garantie ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Garantie Jour 1 : si à la fin du premier jour vous n'avez pas déployé votre première architecture, remboursement intégral. Et si votre application n'est pas en production à la fin du Jour 3, on continue gratuitement jusqu'à ce que ça marche.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -977,16 +1137,16 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Les 100 000 FCFA couvrent la formation et l'accès à l'infrastructure. L'hébergement continu et les services communautaires peuvent faire l'objet d'un abonnement optionnel post-formation, mais ce n'est jamais obligatoire.</div>
+                    <div class="faq-answer-inner">Les 100 000 FCFA couvrent la formation, l'infrastructure et 1 mois d'accès serveurs. L'hébergement continu et les services communautaires peuvent faire l'objet d'un abonnement optionnel — mais ce n'est jamais obligatoire pour continuer à utiliser votre application.</div>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Combien de temps dure l'accès aux serveurs ?</span>
+                    <span>Qu'est-ce que je repars exactement avec ?</span>
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Vous avez accès à l'infrastructure pendant toute la formation. Après, l'accès continu est inclus dans la communauté, avec des options d'extension si vous souhaitez héberger plus de projets.</div>
+                    <div class="faq-answer-inner">Votre application déployée en production, votre VPN configuré, vos automatisations GWS actives, l'accès à la communauté d'opérateurs tech, et 1 mois d'accès aux serveurs pour continuer à pratiquer. En résumé : un écosystème complet, pas juste des connaissances.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1007,18 +1167,18 @@
     <div class="container">
         <div class="places-counter">
             <span class="pulse-dot"></span>
-            Plus que 5 places disponibles
+            Plus que 5 places disponibles — Session limitée
         </div>
-        <h2>Prêt à créer votre<br><span class="gradient" style="background:linear-gradient(135deg,var(--accent-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">première application ?</span></h2>
-        <p>Rejoignez la prochaine session et repartez avec une application en production, un VPN configuré, et une communauté qui vous soutient.</p>
-        <a href="https://wa.me/241XXXXXXXX?text=Bonjour%2C%20je%20souhaite%20réserver%20ma%20place%20pour%20la%20formation%20Développement%20%26%20Ingénierie%20Appliquée" class="btn-primary" style="font-size:1.2rem;padding:18px 48px;" target="_blank">💬 Réserver via WhatsApp</a>
+        <h2>Devenez opérateur tech<br><span class="gradient" style="background:linear-gradient(135deg,var(--accent-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">autonome en 72h</span></h2>
+        <p>Application déployée. VPN configuré. Automatisations actives. Communauté à vie. Tout commence ici.</p>
+        <a href="https://wa.me/241XXXXXXXX?text=Bonjour%2C%20je%20souhaite%20réserver%20ma%20place%20pour%20le%20Bootcamp%20Ingénierie%20Applicative%20%3A%20Développement%20%26%20Infrastructure" class="btn-primary" style="font-size:1.2rem;padding:18px 48px;" target="_blank">💬 Réserver via WhatsApp</a>
     </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
     <div class="container">
-        <p>© 2026 Gosen Academy — Formation Développement & Ingénierie Appliquée</p>
+        <p>© 2026 Gosen Academy — Bootcamp Ingénierie Applicative & Infrastructure</p>
         <p style="margin-top:8px;">Libreville, Gabon · <a href="mailto:ericdavy48@gmail.com">ericdavy48@gmail.com</a></p>
     </div>
 </footer>
