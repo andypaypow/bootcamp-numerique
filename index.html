@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formation Développement & Ingénierie Appliquée — Créez votre première application</title>
+    <meta name="description" content="En 3 jours, passez de zéro à avoir votre application déployée sur des serveurs professionnels. Coaching personnalisé, 5 places par session.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #222240;
+            --accent: #7c3aed;
+            --accent-light: #a78bfa;
+            --accent-glow: rgba(124, 58, 237, 0.3);
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(124, 58, 237, 0.2);
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* === ANIMATED BACKGROUND === */
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(124, 58, 237, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow {
+            position: fixed; top: -200px; right: -200px; width: 600px; height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            z-index: 0; pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-glow-2 {
+            position: fixed; bottom: -300px; left: -200px; width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            z-index: 0; pointer-events: none;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* === CONTAINER === */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        /* === NAVBAR === */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .container {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .nav-brand {
+            font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;
+            font-weight: 500; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent-light); }
+
+        .nav-cta {
+            background: var(--accent); color: white; border: none; padding: 10px 24px;
+            border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.3s; text-decoration: none;
+        }
+        .nav-cta:hover { background: #6d28d9; transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+
+        /* === HERO === */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(124, 58, 237, 0.1); border: 1px solid var(--border);
+            padding: 8px 20px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 500; color: var(--accent-light);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero-badge .dot {
+            width: 8px; height: 8px; background: var(--success); border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900; line-height: 1.1; letter-spacing: -2px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-light), var(--gold-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: clamp(1.1rem, 2vw, 1.35rem);
+            color: var(--text-secondary); max-width: 700px; margin: 0 auto 48px;
+            line-height: 1.8;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .hero-cta-group {
+            display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--accent), #6d28d9);
+            color: white; padding: 16px 40px; border-radius: 12px;
+            font-size: 1.1rem; font-weight: 700; text-decoration: none;
+            border: none; cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 24px var(--accent-glow);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(124, 58, 237, 0.4); }
+
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: transparent; color: var(--text-primary);
+            padding: 16px 40px; border-radius: 12px;
+            font-size: 1.1rem; font-weight: 600; text-decoration: none;
+            border: 1px solid var(--border); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { border-color: var(--accent-light); background: rgba(124, 58, 237, 0.05); }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 48px; margin-top: 64px;
+            padding-top: 48px; border-top: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        .hero-stat { text-align: center; }
+        .hero-stat .number {
+            font-size: 2.5rem; font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-stat .label { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; margin-top: 4px; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === SECTION COMMON === */
+        section { padding: 100px 0; }
+
+        .section-header {
+            text-align: center; margin-bottom: 64px;
+        }
+
+        .section-tag {
+            display: inline-block; font-size: 0.8rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 3px;
+            color: var(--accent-light); margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800; letter-spacing: -1px; line-height: 1.2;
+        }
+
+        .section-desc {
+            color: var(--text-secondary); max-width: 600px; margin: 16px auto 0;
+            font-size: 1.1rem; line-height: 1.7;
+        }
+
+        /* === AVANTAGES === */
+        .advantages-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .advantage-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 28px;
+            transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            opacity: 0; transition: opacity 0.4s;
+        }
+
+        .advantage-card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(124, 58, 237, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .advantage-card:hover::before { opacity: 1; }
+
+        .advantage-icon {
+            width: 56px; height: 56px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; margin-bottom: 20px;
+        }
+
+        .advantage-card h3 {
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;
+        }
+
+        .advantage-card p {
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;
+        }
+
+        /* === PROGRAMME === */
+        .programme {
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 64px 48px;
+            border: 1px solid var(--border);
+        }
+
+        .day-tabs {
+            display: flex; gap: 8px; margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .day-tab {
+            flex: 1; min-width: 140px;
+            padding: 16px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; transition: all 0.3s;
+            text-align: center;
+        }
+
+        .day-tab.active, .day-tab:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .day-content { display: none; }
+        .day-content.active { display: block; animation: fadeInUp 0.4s ease; }
+
+        .day-block {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .day-half {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
+        }
+
+        .day-half h4 {
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent-light); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .day-half h4 .icon { font-size: 1.1rem; }
+
+        .day-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .day-item .check {
+            width: 22px; height: 22px; min-width: 22px;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--success); font-size: 0.75rem; margin-top: 2px;
+        }
+
+        .day-item span { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+
+        /* === PROJETS === */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 28px;
+            transition: all 0.4s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .project-emoji { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+
+        .project-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+
+        .project-card p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.7; }
+
+        .project-techs {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
+        }
+
+        .project-tech {
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 600;
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--accent-light);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        /* === TARIF === */
+        .pricing-section {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+        }
+
+        .pricing-card {
+            max-width: 560px; margin: 0 auto;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            padding: 56px 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 80px var(--accent-glow);
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+        }
+
+        .pricing-popular {
+            position: absolute; top: 20px; right: -32px;
+            background: var(--gold); color: var(--bg-primary);
+            padding: 6px 40px; font-size: 0.75rem; font-weight: 700;
+            transform: rotate(45deg); text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .pricing-label {
+            font-size: 0.9rem; color: var(--text-muted); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
+        }
+
+        .pricing-amount {
+            font-size: 4rem; font-weight: 900; letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--accent-light), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 8px;
+        }
+
+        .pricing-currency {
+            font-size: 1.2rem; color: var(--text-muted); font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            text-align: left; margin: 32px 0;
+        }
+
+        .pricing-feature {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .pricing-feature:last-child { border-bottom: none; }
+
+        .pricing-feature .pf-icon {
+            width: 24px; height: 24px; min-width: 24px;
+            background: rgba(16, 185, 129, 0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--success); font-size: 0.7rem;
+        }
+
+        .pricing-feature span { color: var(--text-secondary); font-size: 0.95rem; }
+
+        .pricing-guarantee {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            font-size: 0.9rem; color: var(--gold-light);
+        }
+
+        /* === FAQ === */
+        .faq-list { max-width: 720px; margin: 0 auto; }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer; font-weight: 600; font-size: 1rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.3s;
+        }
+
+        .faq-question:hover { background: var(--bg-card); }
+
+        .faq-arrow {
+            transition: transform 0.3s;
+            color: var(--accent-light);
+            font-size: 0.8rem;
+        }
+
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+        .faq-answer {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+        }
+
+        .faq-item.open .faq-answer { max-height: 300px; }
+
+        .faq-answer-inner {
+            padding: 0 24px 20px;
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;
+        }
+
+        /* === CTA FINAL === */
+        .cta-final {
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .cta-final h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800; margin-bottom: 16px;
+        }
+
+        .cta-final p {
+            color: var(--text-secondary); font-size: 1.15rem;
+            max-width: 500px; margin: 0 auto 40px;
+        }
+
+        .places-counter {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 12px 24px; border-radius: 50px;
+            margin-bottom: 32px;
+            font-size: 0.95rem; font-weight: 600; color: #fca5a5;
+        }
+
+        .places-counter .pulse-dot {
+            width: 10px; height: 10px;
+            background: var(--danger); border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* === FOOTER === */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a { color: var(--accent-light); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { letter-spacing: -1px; }
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .hero-stat .number { font-size: 2rem; }
+            .programme { padding: 40px 24px; }
+            .day-block { grid-template-columns: 1fr; }
+            .day-half { padding: 24px; }
+            .pricing-card { padding: 40px 28px; }
+            .pricing-amount { font-size: 3rem; }
+            section { padding: 64px 0; }
+        }
+
+        /* === SCROLL ANIMATIONS === */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1; transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow-2"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="container">
+        <div class="nav-brand">Gosen Academy</div>
+        <ul class="nav-links">
+            <li><a href="#avantages">Avantages</a></li>
+            <li><a href="#programme">Programme</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#tarif">Tarif</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#inscription" class="nav-cta">Réserver ma place</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Prochaine session — Inscriptions ouvertes
+        </div>
+        <h1>Créez votre<br><span class="gradient">première application</span><br>en 3 jours</h1>
+        <p class="hero-sub">
+            De zéro à une application déployée sur des serveurs professionnels.
+            Coaching personnalisé, infrastructure clé en main, et une communauté
+            d'ingénieurs qui continue après la formation.
+        </p>
+        <div class="hero-cta-group">
+            <a href="#inscription" class="btn-primary">⚡ Réserver ma place — 5 places</a>
+            <a href="#programme" class="btn-secondary">📅 Voir le programme</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="number">3</div>
+                <div class="label">Jours de formation</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">5</div>
+                <div class="label">Places par session</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">100k</div>
+                <div class="label">FCFA tout compris</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AVANTAGES -->
+<section id="avantages">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Pourquoi nous choisir</div>
+            <h2 class="section-title">Ce qui change tout</h2>
+            <p class="section-desc">Pas un cours en ligne. Pas un tutoriel YouTube. Une expérience complète où vous repartez avec une application en production.</p>
+        </div>
+        <div class="advantages-grid">
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">🖥️</div>
+                <h3>Serveurs & Infrastructure prêts</h3>
+                <p>VPS dédié, Docker, Nginx, SSL, Cloudflare, base de données — tout est déjà en place. Vous ne perdez pas 2 jours à configurer un serveur. Vous commencez directement sur une infrastructure professionnelle.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">🎯</div>
+                <h3>Coaching ultra-personnalisé</h3>
+                <p>5 places maximum. Chaque participant est suivi individuellement. Pas de salle de 50 personnes où vous êtes invisible. Ici, on connaît votre nom, votre projet, et on ne vous lâche pas.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">🚀</div>
+                <h3>Création concrète dès le Jour 1</h3>
+                <p>Zéro théorie inutile. Vous concevez, vous construisez, vous déployez. À la fin du 3ème jour, votre application est en ligne et fonctionnelle. Pas un prototype — un vrai produit déployé.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">🤖</div>
+                <h3>IA intégrée à vos projets</h3>
+                <p>Intégrez l'intelligence artificielle dans vos applications — chatbots, analyse de documents, assistants intelligents. Vos apps ne sont pas statiques, elles pensent.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">🔒</div>
+                <h3>VPN & Automatisations inclus</h3>
+                <p>Créez votre propre VPN, automatisez vos emails, documents et workflows avec Google Workspace. Les outils qui font la différence au quotidien.</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon">👥</div>
+                <h3>Communauté d'ingénieurs</h3>
+                <p>Après la formation, vous n'êtes pas seul. Accès à la communauté, partage de ressources, entraide sur les projets, et mise à jour continue des outils et méthodes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROGRAMME -->
+<section id="programme">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Programme détaillé</div>
+            <h2 class="section-title">3 jours pour tout changer</h2>
+            <p class="section-desc">Chaque journée est conçue pour vous faire progresser concrètement. Du concept au déploiement.</p>
+        </div>
+        <div class="programme reveal">
+            <div class="day-tabs">
+                <button class="day-tab active" onclick="showDay(1)">Jour 1 — Fondations</button>
+                <button class="day-tab" onclick="showDay(2)">Jour 2 — Construction</button>
+                <button class="day-tab" onclick="showDay(3)">Jour 3 — Production</button>
+            </div>
+
+            <div class="day-content active" id="day-1">
+                <div class="day-block">
+                    <div class="day-half">
+                        <h4><span class="icon">🌅</span> Matin — Architecture & Écosystème</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Comprendre l'architecture d'une application moderne</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Serveurs, Docker, bases de données, déploiement</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Choisir et concevoir son projet personnel</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Setup de l'environnement de travail</span>
+                        </div>
+                    </div>
+                    <div class="day-half">
+                        <h4><span class="icon">☀️</span> Après-midi — Première Application</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Structure et architecture de votre application</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Développement guidé avec coaching individuel</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Premier déploiement en ligne</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Test et validation sur appareil réel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-content" id="day-2">
+                <div class="day-block">
+                    <div class="day-half">
+                        <h4><span class="icon">🌅</span> Matin — Fonctionnalités Avancées</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Authentification et gestion des utilisateurs</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Base de données et opérations CRUD</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Intégration de l'IA (Ollama, chatbots)</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Sécurité et bonnes pratiques</span>
+                        </div>
+                    </div>
+                    <div class="day-half">
+                        <h4><span class="icon">☀️</span> Après-midi — Projet Personnel</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Construire votre application avec coaching</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Intégrer les fonctionnalités clés</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Tests et débuggage en conditions réelles</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Optimisation et préparation au déploiement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-content" id="day-3">
+                <div class="day-block">
+                    <div class="day-half">
+                        <h4><span class="icon">🌅</span> Matin — VPN & Automatisations</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Créer et configurer votre propre VPN</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Automatisations Google Workspace (emails, docs, sheets)</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Workflows d'automatisation avec n8n</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Connexion entre vos outils et votre app</span>
+                        </div>
+                    </div>
+                    <div class="day-half">
+                        <h4><span class="icon">☀️</span> Après-midi — Mise en Production</h4>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Finalisation et déploiement en production</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Configuration domaine et SSL</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Lancement officiel de votre application</span>
+                        </div>
+                        <div class="day-item">
+                            <div class="check">✓</div>
+                            <span>Intégration à la communauté d'ingénieurs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Ce que vous pouvez créer</div>
+            <h2 class="section-title">Projets réalisables</h2>
+            <p class="section-desc">Voici des exemples concrets d'applications que vous serez capable de créer pendant la formation.</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <span class="project-emoji">🤖</span>
+                <h3>Chatbot WhatsApp IA</h3>
+                <p>Un agent conversationnel intelligent sur WhatsApp pour votre business — prise de commandes, FAQ, réservations, support client automatisé.</p>
+                <div class="project-techs">
+                    <span class="project-tech">WhatsApp API</span>
+                    <span class="project-tech">Ollama</span>
+                    <span class="project-tech">FastAPI</span>
+                    <span class="project-tech">Supabase</span>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <span class="project-emoji">🌐</span>
+                <h3>Application Web complète</h3>
+                <p>Une application web avec authentification, base de données, tableau de bord — pour gérer un business, une école, une église ou tout autre organisme.</p>
+                <div class="project-techs">
+                    <span class="project-tech">Django</span>
+                    <span class="project-tech">PostgreSQL</span>
+                    <span class="project-tech">Nginx</span>
+                    <span class="project-tech">Docker</span>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <span class="project-emoji">🔒</span>
+                <h3>VPN personnalisé</h3>
+                <p>Votre propre VPN avec navigation sans consommation de données. Configuré spécifiquement pour votre opérateur et vos besoins.</p>
+                <div class="project-techs">
+                    <span class="project-tech">SSH Tunnel</span>
+                    <span class="project-tech">Proxy</span>
+                    <span class="project-tech">SSL</span>
+                    <span class="project-tech">VPS</span>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <span class="project-emoji">⚙️</span>
+                <h3>Automatisations GWS</h3>
+                <p>Automatisez vos emails, vos Google Sheets, vos documents. Gagnez des heures chaque semaine grâce à des workflows intelligents.</p>
+                <div class="project-techs">
+                    <span class="project-tech">Google Workspace</span>
+                    <span class="project-tech">n8n</span>
+                    <span class="project-tech">API</span>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <span class="project-emoji">📱</span>
+                <h3>Application de service</h3>
+                <p>Une app de réservation, de livraison, de gestion de stock — le type d'application que les businesses locaux ont besoin au Gabon.</p>
+                <div class="project-techs">
+                    <span class="project-tech">Full-stack</span>
+                    <span class="project-tech">Auth</span>
+                    <span class="project-tech">Paiement</span>
+                    <span class="project-tech">Mobile</span>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <span class="project-emoji">📄</span>
+                <h3>Outil IA de documents</h3>
+                <p>Un outil qui extrait, analyse et traite automatiquement vos documents grâce à l'OCR et l'IA — factures, contrats, formulaires.</p>
+                <div class="project-techs">
+                    <span class="project-tech">OCR</span>
+                    <span class="project-tech">Ollama</span>
+                    <span class="project-tech">Python</span>
+                    <span class="project-tech">API</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TARIF -->
+<section id="tarif" class="pricing-section">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Investissement</div>
+            <h2 class="section-title">Un prix, tout compris</h2>
+            <p class="section-desc">Pas de frais cachés. Pas d'abonnement serveur. Pas de surprise.</p>
+        </div>
+        <div class="pricing-card reveal">
+            <div class="pricing-popular">5 places</div>
+            <div class="pricing-label">Formation complète</div>
+            <div class="pricing-amount">100 000</div>
+            <div class="pricing-currency">FCFA — 3 jours présentiel</div>
+            <div class="pricing-features">
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>3 jours de formation en présentiel</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Accès serveurs VPS + infrastructure complète</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Coaching personnalisé (5 places max)</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Votre application déployée en production</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>VPN + automatisations GWS inclus</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Accès communauté d'ingénieurs</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Hébergement, domaine et SSL inclus</span>
+                </div>
+                <div class="pricing-feature">
+                    <div class="pf-icon">✓</div>
+                    <span>Coaching de suivi post-formation</span>
+                </div>
+            </div>
+            <div class="pricing-guarantee">
+                🛡️ <strong>Garantie satisfaction</strong> — Si votre application n'est pas déployée à la fin du Jour 3, on continue jusqu'à ce que ça marche.
+            </div>
+            <a href="#inscription" class="btn-primary" style="margin-top: 32px; display: inline-flex;">⚡ Réserver ma place</a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">Questions fréquentes</div>
+            <h2 class="section-title">Vous hésitez encore ?</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Faut-il avoir des connaissances en programmation ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Non. La formation est conçue pour les débutants complets. Notre méthodologie d'ingénierie moderne vous permet de vous concentrer sur la conception et l'architecture de votre projet — l'implémentation suit naturellement.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Que dois-je apporter ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Un ordinateur portable (Windows, Mac ou Linux) et une connexion internet. Tout le reste — serveurs, outils, infrastructure — est déjà prêt pour vous.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Est-ce que je repars vraiment avec une application fonctionnelle ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Oui, garanti. Votre application sera déployée en production sur un serveur professionnel, accessible publiquement. Si ce n'est pas le cas à la fin du Jour 3, on continue avec vous jusqu'à ce que ça marche.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Y a-t-il des frais supplémentaires après la formation ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Les 100 000 FCFA couvrent la formation et l'accès à l'infrastructure. L'hébergement continu et les services communautaires peuvent faire l'objet d'un abonnement optionnel post-formation, mais ce n'est jamais obligatoire.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Combien de temps dure l'accès aux serveurs ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">Vous avez accès à l'infrastructure pendant toute la formation. Après, l'accès continu est inclus dans la communauté, avec des options d'extension si vous souhaitez héberger plus de projets.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Où se déroule la formation ?</span>
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">La formation se déroule en présentiel à Libreville, Gabon. L'adresse exacte est communiquée après inscription. Les 5 places permettent un suivi optimal dans un cadre professionnel.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="inscription" class="cta-final">
+    <div class="container">
+        <div class="places-counter">
+            <span class="pulse-dot"></span>
+            Plus que 5 places disponibles
+        </div>
+        <h2>Prêt à créer votre<br><span class="gradient" style="background:linear-gradient(135deg,var(--accent-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">première application ?</span></h2>
+        <p>Rejoignez la prochaine session et repartez avec une application en production, un VPN configuré, et une communauté qui vous soutient.</p>
+        <a href="https://wa.me/241XXXXXXXX?text=Bonjour%2C%20je%20souhaite%20réserver%20ma%20place%20pour%20la%20formation%20Développement%20%26%20Ingénierie%20Appliquée" class="btn-primary" style="font-size:1.2rem;padding:18px 48px;" target="_blank">💬 Réserver via WhatsApp</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <p>© 2026 Gosen Academy — Formation Développement & Ingénierie Appliquée</p>
+        <p style="margin-top:8px;">Libreville, Gabon · <a href="mailto:ericdavy48@gmail.com">ericdavy48@gmail.com</a></p>
+    </div>
+</footer>
+
+<script>
+    // Day tabs
+    function showDay(n) {
+        document.querySelectorAll('.day-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.day-tab').forEach(el => el.classList.remove('active'));
+        document.getElementById('day-' + n).classList.add('active');
+        document.querySelectorAll('.day-tab')[n - 1].classList.add('active');
+    }
+
+    // FAQ accordion
+    function toggleFaq(el) {
+        const item = el.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Navbar scroll effect
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        const scroll = window.scrollY;
+        if (scroll > 100) {
+            navbar.style.background = 'rgba(10, 10, 15, 0.95)';
+        } else {
+            navbar.style.background = 'rgba(10, 10, 15, 0.85)';
+        }
+        lastScroll = scroll;
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
