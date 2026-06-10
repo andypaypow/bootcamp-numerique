@@ -24,8 +24,9 @@ class InscriptionForm(forms.ModelForm):
             }),
             'telephone': forms.TextInput(attrs={
                 'class': 'form-input',
-                'placeholder': '06 XX XX XX XX',
+                'placeholder': '06 70 45 35 40',
                 'autocomplete': 'tel',
+                'type': 'tel',
             }),
             'whatsapp': forms.TextInput(attrs={
                 'class': 'form-input',
@@ -55,12 +56,15 @@ class InscriptionForm(forms.ModelForm):
         return value
 
     def clean_telephone(self):
-        """Normaliser le numéro de téléphone."""
+        """Normaliser le numéro de téléphone gabonais.
+        Accepte les formats: 06XXXXXX, 07XXXXXX, 0XXXXXXX, +241XXXXXXX, etc.
+        Au Gabon, les numéros font 8 chiffres (9 avec le 0 initial).
+        """
         from .utils import normalize_phone
         telephone = self.cleaned_data.get('telephone', '')
         normalized = normalize_phone(telephone)
-        if not normalized or len(normalized) < 10:
+        if not normalized or len(normalized) < 8:
             raise forms.ValidationError(
-                'Entrez un numéro de téléphone valide (ex: 06 XX XX XX XX).'
+                'Entrez un numéro de téléphone valide (ex: 06 70 45 35 40).'
             )
         return normalized
