@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Session, Inscription, PaiementBootcamp, WebhookLogBootcamp
+from .models import Session, Inscription, PaiementBootcamp, CyberschoolConfig, WebhookLogBootcamp
 
 
 @admin.register(Session)
@@ -50,6 +50,47 @@ class PaiementBootcampAdmin(admin.ModelAdmin):
     search_fields = ['reference_transaction', 'telephone', 'telephone_normalized']
     ordering = ['-date_creation']
     readonly_fields = ['date_creation', 'date_paiement']
+
+
+@admin.register(CyberschoolConfig)
+class CyberschoolConfigAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'est_active', 'lien_moov_money_court', 'lien_airtel_money_court', 'date_modification']
+    list_filter = ['est_active']
+    readonly_fields = ['date_creation', 'date_modification']
+    fieldsets = (
+        ('Configuration générale', {
+            'fields': ('nom', 'est_active')
+        }),
+        ('Liens de paiement Cyberschool (Libertis)', {
+            'description': 'Collez ici les URLs de paiement générées depuis votre dashboard Cyberschool/Libertis. '
+                           'Ces liens seront affichés sur la page de paiement comme boutons.',
+            'fields': ('lien_moov_money', 'lien_airtel_money')
+        }),
+        ('Numéros de paiement directs (optionnel)', {
+            'description': 'Si vous n\'avez pas de liens Cyberschool, indiquez les numéros Moov/Airtel '
+                           'pour que les participants envoient l\'argent directement.',
+            'fields': ('numero_moov', 'numero_airtel')
+        }),
+        ('Instructions supplémentaires', {
+            'description': 'Texte affiché sur la page de paiement en plus des liens/numéros.',
+            'fields': ('instructions_paiement',)
+        }),
+        ('Historique', {
+            'fields': ('date_creation', 'date_modification')
+        }),
+    )
+
+    def lien_moov_money_court(self, obj):
+        if obj.lien_moov_money:
+            return obj.lien_moov_money[:50] + '...'
+        return '—'
+    lien_moov_money_court.short_description = 'Lien Moov Money'
+
+    def lien_airtel_money_court(self, obj):
+        if obj.lien_airtel_money:
+            return obj.lien_airtel_money[:50] + '...'
+        return '—'
+    lien_airtel_money_court.short_description = 'Lien Airtel Money'
 
 
 @admin.register(WebhookLogBootcamp)

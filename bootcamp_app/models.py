@@ -132,6 +132,55 @@ class PaiementBootcamp(models.Model):
         return f"Paiement {self.reference_transaction} - {self.get_statut_display()}"
 
 
+class CyberschoolConfig(models.Model):
+    """Configuration Cyberschool — liens de paiement Moov Money et Airtel Money.
+    Un seul enregistrement actif à la fois (Singleton pattern).
+    """
+    est_active = models.BooleanField(default=True, help_text="Configuration active")
+    nom = models.CharField(max_length=100, default='Config Cyberschool', help_text="Nom pour identifier cette config")
+
+    # Liens de paiement Cyberschool
+    lien_moov_money = models.URLField(
+        max_length=500, blank=True, default='',
+        help_text="Lien de paiement Libertis Moov Money (URL Cyberschool)"
+    )
+    lien_airtel_money = models.URLField(
+        max_length=500, blank=True, default='',
+        help_text="Lien de paiement Libertis Airtel Money (URL Cyberschool)"
+    )
+
+    # Numéros de paiement directs (optionnel, si pas de lien Cyberschool)
+    numero_moov = models.CharField(
+        max_length=50, blank=True, default='',
+        help_text="Numéro Moov Money pour paiement direct (ex: 06 XX XX XX XX)"
+    )
+    numero_airtel = models.CharField(
+        max_length=50, blank=True, default='',
+        help_text="Numéro Airtel Money pour paiement direct (ex: 07 XX XX XX XX)"
+    )
+
+    # Instructions supplémentaires
+    instructions_paiement = models.TextField(
+        blank=True, default='',
+        help_text="Instructions de paiement affichées sur la page de paiement (optionnel)"
+    )
+
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_modification = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Configuration Cyberschool'
+        verbose_name_plural = 'Configuration Cyberschool'
+
+    def __str__(self):
+        return f"{self.nom} {'(active)' if self.est_active else '(inactive)'}"
+
+    @classmethod
+    def get_active(cls):
+        """Récupérer la configuration active."""
+        return cls.objects.filter(est_active=True).first()
+
+
 class WebhookLogBootcamp(models.Model):
     """Log de tous les webhooks reçus pour le bootcamp"""
     SOURCE_CHOICES = [

@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from ..models import Session, Inscription
+from ..models import Session, Inscription, CyberschoolConfig
 from ..forms import InscriptionForm
 
 logger = logging.getLogger(__name__)
@@ -100,13 +100,15 @@ def paiement_page(request, inscription_id):
 
     session = inscription.session
 
+    # Récupérer la config Cyberschool active
+    cyberschool_config = CyberschoolConfig.get_active()
+
     context = {
         'inscription': inscription,
         'session': session,
         'page_title': f'Paiement — {session.nom}',
-        # Les liens de paiement Cyberschool seront construits dans le template
-        # avec le prix dynamique de la session
         'prix': session.prix,
+        'cyberschool': cyberschool_config,
     }
     return render(request, 'bootcamp_app/paiement.html', context)
 

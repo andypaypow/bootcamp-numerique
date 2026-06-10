@@ -51,20 +51,73 @@
 
             <div class="paiement-methods">
                 <h2>Comment payer</h2>
+
+                {% if cyberschool and cyberschool.lien_moov_money or cyberschool and cyberschool.lien_airtel_money %}
+                <!-- Liens Cyberschool configurés : afficher les boutons -->
+                <div class="method-cards">
+                    {% if cyberschool.lien_moov_money %}
+                    <a href="{{ cyberschool.lien_moov_money }}" target="_blank" rel="noopener" class="method-card method-card-link">
+                        <div class="method-icon">📱</div>
+                        <h3>Moov Money</h3>
+                        <p>Payer <strong>{{ prix|floatformat:0 }} FCFA</strong> via Libertis Moov Money</p>
+                        <span class="method-btn">Payer avec Moov Money →</span>
+                    </a>
+                    {% endif %}
+
+                    {% if cyberschool.lien_airtel_money %}
+                    <a href="{{ cyberschool.lien_airtel_money }}" target="_blank" rel="noopener" class="method-card method-card-link">
+                        <div class="method-icon">📲</div>
+                        <h3>Airtel Money</h3>
+                        <p>Payer <strong>{{ prix|floatformat:0 }} FCFA</strong> via Libertis Airtel Money</p>
+                        <span class="method-btn">Payer avec Airtel Money →</span>
+                    </a>
+                    {% endif %}
+                </div>
+                {% elif cyberschool and cyberschool.numero_moov or cyberschool and cyberschool.numero_airtel %}
+                <!-- Numéros directs configurés (pas de liens Cyberschool) -->
+                <div class="method-cards">
+                    {% if cyberschool.numero_moov %}
+                    <div class="method-card">
+                        <div class="method-icon">📱</div>
+                        <h3>Moov Money</h3>
+                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au :</p>
+                        <p class="payment-phone">{{ cyberschool.numero_moov }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if cyberschool.numero_airtel %}
+                    <div class="method-card">
+                        <div class="method-icon">📲</div>
+                        <h3>Airtel Money</h3>
+                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au :</p>
+                        <p class="payment-phone">{{ cyberschool.numero_airtel }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <!-- Aucune config Cyberschool : message générique -->
                 <div class="method-cards">
                     <div class="method-card">
                         <div class="method-icon">📱</div>
                         <h3>Moov Money</h3>
-                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au numéro indiqué lors de votre inscription.</p>
+                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au numéro indiqué par le formateur.</p>
                     </div>
                     <div class="method-card">
                         <div class="method-icon">📲</div>
                         <h3>Airtel Money</h3>
-                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au numéro indiqué lors de votre inscription.</p>
+                        <p>Envoyez <strong>{{ prix|floatformat:0 }} FCFA</strong> au numéro indiqué par le formateur.</p>
                     </div>
                 </div>
+                {% endif %}
+
+                {% if cyberschool and cyberschool.instructions_paiement %}
+                <div class="paiement-instructions">
+                    <p>{{ cyberschool.instructions_paiement|linebreaksbr }}</p>
+                </div>
+                {% endif %}
+
                 <div class="paiement-note">
-                    <p>💡 Le paiement est confirmé automatiquement. Vous n'avez rien d'autre à faire après avoir envoyé l'argent.</p>
+                    <p>💡 Le paiement est confirmé automatiquement. Vous n'avez rien d'autre à faire après avoir payé.</p>
                 </div>
             </div>
         </div>
@@ -222,6 +275,26 @@
         border-radius: 12px;
         padding: 24px;
         text-align: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .method-card-link {
+        display: block;
+        cursor: pointer;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .method-card-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--gabon-vert);
+            box-shadow: 0 4px 16px rgba(0, 151, 57, 0.1);
+        }
+    }
+
+    .method-card-link:active .method-btn {
+        transform: scale(0.97);
     }
 
     .method-icon { font-size: 2rem; margin-bottom: 8px; }
@@ -236,6 +309,41 @@
         color: var(--text-secondary);
         font-size: 0.85rem;
         line-height: 1.5;
+    }
+
+    .payment-phone {
+        color: var(--gabon-vert) !important;
+        font-size: 1.1rem !important;
+        font-weight: 800 !important;
+        margin-top: 8px !important;
+        letter-spacing: 1px;
+    }
+
+    .method-btn {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 10px 20px;
+        background: var(--gabon-vert);
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: transform 0.15s ease;
+    }
+
+    .paiement-instructions {
+        text-align: left;
+        margin-top: 16px;
+        padding: 16px;
+        background: rgba(255, 215, 0, 0.06);
+        border: 1px solid rgba(255, 215, 0, 0.15);
+        border-radius: 12px;
+    }
+
+    .paiement-instructions p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
 
     .paiement-note {
