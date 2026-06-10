@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: bootcamp-prod-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bootcamp_prod}
+      POSTGRES_USER: ${POSTGRES_USER:-bootcamp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    networks:
+      - gosen-network
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: bootcamp-prod-web
+    command: gunicorn bootcamp_project.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 120
+    ports:
+      - "9200:8000"
+    depends_on:
+      - db
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY required}
+      - ALLOWED_HOSTS=bootcamp.filtreexpert.org,158.220.96.181,localhost
+      - POSTGRES_DB=${POSTGRES_DB:-bootcamp_prod}
+      - POSTGRES_USER=${POSTGRES_USER:-bootcamp}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - DJANGO_SETTINGS_MODULE=bootcamp_project.settings
+      - DJANGO_SUPERUSER_USERNAME=${ADMIN_USERNAME:-admin}
+      - DJANGO_SUPERUSER_EMAIL=${ADMIN_EMAIL:-admin@bootcamp.filtreexpert.org}
+      - DJANGO_SUPERUSER_PASSWORD=${ADMIN_PASSWORD:?ADMIN_PASSWORD required}
+    volumes:
+      - static_prod:/code/staticfiles
+      - media_prod:/code/media
+    networks:
+      - gosen-network
+    restart: unless-stopped
+
+volumes:
+  postgres_prod_data:
+  static_prod:
+  media_prod:
+
+networks:
+  gosen-network:
+    external: true

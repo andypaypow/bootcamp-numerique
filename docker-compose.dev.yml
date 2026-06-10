@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: bootcamp-dev-db
+    environment:
+      POSTGRES_DB: bootcamp_dev
+      POSTGRES_USER: bootcamp
+      POSTGRES_PASSWORD: bootcamp_dev_pass
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      gosen-network:
+        aliases:
+          - bootcamp-db
+    restart: unless-stopped
+
+  web:
+    build: .
+    container_name: bootcamp-dev-web
+    command: python manage.py runserver 0.0.0.0:9200
+    volumes:
+      - .:/code
+      - static_dev:/code/staticfiles
+    ports:
+      - "9200:9200"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-change-in-prod
+      - ALLOWED_HOSTS=localhost,127.0.0.1,bootcamp.filtreexpert.org,158.220.96.181
+      - POSTGRES_DB=bootcamp_dev
+      - POSTGRES_USER=bootcamp
+      - POSTGRES_PASSWORD=bootcamp_dev_pass
+      - POSTGRES_HOST=bootcamp-dev-db
+      - POSTGRES_PORT=5432
+      - DJANGO_SETTINGS_MODULE=bootcamp_project.settings
+    networks:
+      - gosen-network
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+  static_dev:
+
+networks:
+  gosen-network:
+    external: true
