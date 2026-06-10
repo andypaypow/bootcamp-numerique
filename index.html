@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootcamp Ingénierie Applicative — 72h pour devenir autonome</title>
+    <title>Bootcamp Numérique — 72h pour devenir autonome</title>
     <meta name="description" content="Terminale ou étudiant ? En 3 jours, acquérez des compétences d'actualité et créez votre première application. Coaching sur-mesure, infrastructure incluse, 5 places max.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -19,27 +19,28 @@
             --gabon-bleu: #003DA5;
             --gabon-bleu-light: #1a56c4;
 
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8faf8;
-            --bg-card: #ffffff;
+            /* Fonds teintés (jamais #fff/#000 purs) */
+            --bg-primary: #fafbfa;
+            --bg-secondary: #f4f7f4;
+            --bg-card: #fcfdfc;
             --bg-card-hover: #f0f9f0;
             --accent: #009739;
             --accent-light: #00b844;
             --accent-glow: rgba(0, 151, 57, 0.15);
             --gold: #FFD700;
             --gold-light: #FFD700;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --border: rgba(0, 151, 57, 0.15);
+            --text-primary: #0f1a0f;
+            --text-secondary: #3a4a3a;
+            --text-muted: #6b7a6b;
+            --border: rgba(0, 151, 57, 0.12);
             --success: #009739;
-            --danger: #dc2626;
+            --danger: #b91c1c;
         }
 
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.7;
@@ -49,7 +50,7 @@
         /* Bande tricolore gabonaise en haut */
         body::before {
             content: '';
-            position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 1000;
+            position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 40;
             background: linear-gradient(90deg, var(--gabon-vert) 33.33%, var(--gabon-jaune) 33.33%, var(--gabon-jaune) 66.66%, var(--gabon-bleu) 66.66%);
         }
 
@@ -57,22 +58,22 @@
         .bg-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image:
-                linear-gradient(rgba(0, 151, 57, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 151, 57, 0.04) 1px, transparent 1px);
+                linear-gradient(rgba(0, 151, 57, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 151, 57, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
             z-index: 0; pointer-events: none;
         }
 
         .bg-glow {
             position: fixed; top: -200px; right: -200px; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 151, 57, 0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 151, 57, 0.06) 0%, transparent 70%);
             z-index: 0; pointer-events: none;
             animation: float 8s ease-in-out infinite;
         }
 
         .bg-glow-2 {
             position: fixed; bottom: -300px; left: -200px; width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 61, 165, 0.04) 0%, transparent 70%);
             z-index: 0; pointer-events: none;
             animation: float 12s ease-in-out infinite reverse;
         }
@@ -82,17 +83,28 @@
             50% { transform: translate(30px, -30px); }
         }
 
+        /* === REDUCED MOTION === */
+        @media (prefers-reduced-motion: reduce) {
+            .bg-glow, .bg-glow-2 { animation: none; }
+            .hero-badge .dot { animation: none; }
+            .places-counter .pulse-dot { animation: none; }
+            .reveal { transition: none; opacity: 1; transform: none; }
+            .day-content.active { animation: none; }
+            html { scroll-behavior: auto; }
+        }
+
         /* === CONTAINER === */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
         /* === NAVBAR === */
         .navbar {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(255, 255, 255, 0.92);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+            background: rgba(250, 251, 250, 0.92);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 16px 0;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
         }
 
         .navbar .container {
@@ -101,39 +113,45 @@
 
         .nav-brand {
             font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-bleu));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--gabon-vert);
         }
 
         .nav-links { display: flex; gap: 32px; list-style: none; }
 
         .nav-links a {
             color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;
-            font-weight: 500; transition: color 0.3s;
+            font-weight: 500; transition: color 0.2s ease;
         }
-        .nav-links a:hover { color: var(--gabon-vert); }
+        @media (hover: hover) and (pointer: fine) {
+            .nav-links a:hover { color: var(--gabon-vert); }
+        }
 
         .nav-cta {
             background: var(--gabon-vert); color: white; border: none; padding: 10px 24px;
             border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            transition: all 0.3s; text-decoration: none;
+            transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+            text-decoration: none;
         }
-        .nav-cta:hover { background: var(--gabon-vert-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0, 151, 57, 0.3); }
+        @media (hover: hover) and (pointer: fine) {
+            .nav-cta:hover { background: var(--gabon-vert-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0, 151, 57, 0.25); }
+        }
+        .nav-cta:active { transform: scale(0.97); }
 
-        /* === HERO === */
+        /* === HERO (VARIANCE 6 : split-tone) === */
         .hero {
             padding: 160px 0 100px;
             text-align: center;
+            min-height: 100dvh;
+            display: flex; flex-direction: column; justify-content: center;
         }
 
         .hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(0, 151, 57, 0.08); border: 1px solid rgba(0, 151, 57, 0.2);
+            background: rgba(0, 151, 57, 0.06); border: 1px solid rgba(0, 151, 57, 0.15);
             padding: 8px 20px; border-radius: 50px;
             font-size: 0.85rem; font-weight: 500; color: var(--gabon-vert);
             margin-bottom: 32px;
-            animation: fadeInUp 0.6s ease;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .hero-badge .dot {
@@ -148,69 +166,72 @@
 
         .hero h1 {
             font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 900; line-height: 1.1; letter-spacing: -2px;
+            font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
             margin-bottom: 24px;
-            animation: fadeInUp 0.6s ease 0.1s both;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.1s both;
+            max-width: 720px; margin-left: auto; margin-right: auto;
         }
 
-        .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-bleu));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        /* Split-tone : mot accentué en vert, reste en neutre */
+        .hero h1 .accent-word { color: var(--gabon-vert); }
 
         .hero-sub {
-            font-size: clamp(1.1rem, 2vw, 1.35rem);
-            color: var(--text-secondary); max-width: 720px; margin: 0 auto 48px;
+            font-size: clamp(1.05rem, 2vw, 1.2rem);
+            color: var(--text-secondary); max-width: 620px; margin: 0 auto 48px;
             line-height: 1.8;
-            animation: fadeInUp 0.6s ease 0.2s both;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.2s both;
         }
 
         .hero-sub strong { color: var(--gabon-bleu); font-weight: 600; }
 
         .hero-cta-group {
             display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease 0.3s both;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.3s both;
         }
 
         .btn-primary {
             display: inline-flex; align-items: center; gap: 8px;
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-vert-light));
+            background: var(--gabon-vert);
             color: white; padding: 16px 40px; border-radius: 12px;
             font-size: 1.1rem; font-weight: 700; text-decoration: none;
             border: none; cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 24px rgba(0, 151, 57, 0.25);
+            transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 24px rgba(0, 151, 57, 0.2);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0, 151, 57, 0.35); }
+        @media (hover: hover) and (pointer: fine) {
+            .btn-primary:hover { background: var(--gabon-vert-light); transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0, 151, 57, 0.3); }
+        }
+        .btn-primary:active { transform: scale(0.97); }
 
         .btn-secondary {
             display: inline-flex; align-items: center; gap: 8px;
             background: transparent; color: var(--gabon-bleu);
             padding: 16px 40px; border-radius: 12px;
             font-size: 1.1rem; font-weight: 600; text-decoration: none;
-            border: 1px solid rgba(0, 61, 165, 0.2); cursor: pointer;
-            transition: all 0.3s;
+            border: 1px solid rgba(0, 61, 165, 0.15); cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
         }
-        .btn-secondary:hover { border-color: var(--gabon-bleu); background: rgba(0, 61, 165, 0.05); }
+        @media (hover: hover) and (pointer: fine) {
+            .btn-secondary:hover { border-color: var(--gabon-bleu); background: rgba(0, 61, 165, 0.04); }
+        }
+        .btn-secondary:active { transform: scale(0.97); }
 
         .hero-stats {
             display: flex; justify-content: center; gap: 48px; margin-top: 64px;
             padding-top: 48px; border-top: 1px solid var(--border);
-            animation: fadeInUp 0.6s ease 0.4s both;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.4s both;
         }
 
         .hero-stat { text-align: center; }
         .hero-stat .number {
-            font-size: 2.5rem; font-weight: 900;
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-bleu));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem; font-weight: 800;
+            color: var(--gabon-vert);
+            font-variant-numeric: tabular-nums;
         }
         .hero-stat .label { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; margin-top: 4px; }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -221,6 +242,7 @@
             text-align: center; margin-bottom: 64px;
         }
 
+        /* Eyebrow : max 1 pour 3 sections */
         .section-tag {
             display: inline-block; font-size: 0.8rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 3px;
@@ -234,13 +256,13 @@
 
         .section-desc {
             color: var(--text-secondary); max-width: 650px; margin: 16px auto 0;
-            font-size: 1.1rem; line-height: 1.7;
+            font-size: 1.05rem; line-height: 1.7;
         }
 
         /* === PROMISE BANNER === */
         .promise-banner {
-            background: linear-gradient(135deg, rgba(0, 151, 57, 0.05), rgba(255, 215, 0, 0.05));
-            border: 1px solid rgba(0, 151, 57, 0.15);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 20px;
             padding: 48px;
             text-align: center;
@@ -260,54 +282,46 @@
         }
 
         .promise-banner p {
-            font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;
+            font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;
             line-height: 1.7;
         }
 
         .promise-banner p strong { color: var(--gabon-bleu); font-weight: 700; }
 
-        /* === AVANTAGES === */
+        /* === AVANTAGES — grille asymétrique (VARIANCE 6) === */
         .advantages-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
         .advantage-card {
             background: var(--bg-card);
-            border: 1px solid rgba(0, 151, 57, 0.1);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 36px 28px;
-            transition: all 0.4s ease;
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease, box-shadow 0.3s ease;
             position: relative; overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
-        .advantage-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--gabon-vert), var(--gabon-jaune));
-            opacity: 0; transition: opacity 0.4s;
+        @media (hover: hover) and (pointer: fine) {
+            .advantage-card:hover {
+                border-color: rgba(0, 151, 57, 0.25);
+                transform: translateY(-4px);
+                box-shadow: 0 8px 24px rgba(0, 151, 57, 0.06);
+            }
         }
-
-        .advantage-card:hover {
-            background: var(--bg-card-hover);
-            border-color: rgba(0, 151, 57, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 151, 57, 0.08);
-        }
-
-        .advantage-card:hover::before { opacity: 1; }
 
         .advantage-icon {
-            width: 56px; height: 56px;
-            background: rgba(0, 151, 57, 0.08);
-            border-radius: 14px;
+            width: 48px; height: 48px;
+            background: rgba(0, 151, 57, 0.06);
+            border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem; margin-bottom: 20px;
+            font-size: 1.4rem; margin-bottom: 16px;
         }
 
         .advantage-card h3 {
-            font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;
+            font-size: 1.15rem; font-weight: 700; margin-bottom: 8px;
         }
 
         .advantage-card p {
@@ -323,7 +337,7 @@
             background: var(--bg-secondary);
             border-radius: 24px;
             padding: 64px 48px;
-            border: 1px solid rgba(0, 151, 57, 0.1);
+            border: 1px solid var(--border);
         }
 
         .day-tabs {
@@ -335,22 +349,30 @@
             flex: 1; min-width: 160px;
             padding: 16px 24px;
             background: transparent;
-            border: 1px solid rgba(0, 151, 57, 0.15);
+            border: 1px solid rgba(0, 151, 57, 0.12);
             border-radius: 12px;
             color: var(--text-secondary);
             font-weight: 600; font-size: 0.95rem;
-            cursor: pointer; transition: all 0.3s;
+            font-family: 'JetBrains Mono', monospace;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
             text-align: center;
         }
 
-        .day-tab.active, .day-tab:hover {
+        .day-tab.active {
             background: var(--gabon-vert);
             border-color: var(--gabon-vert);
             color: white;
         }
+        @media (hover: hover) and (pointer: fine) {
+            .day-tab:not(.active):hover {
+                border-color: var(--gabon-vert);
+                color: var(--gabon-vert);
+            }
+        }
 
         .day-content { display: none; }
-        .day-content.active { display: block; animation: fadeInUp 0.4s ease; }
+        .day-content.active { display: block; animation: fadeInUp 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
 
         .day-block {
             display: grid; grid-template-columns: 1fr 1fr;
@@ -361,11 +383,11 @@
             background: var(--bg-card);
             border-radius: 16px;
             padding: 32px;
-            border: 1px solid rgba(0, 151, 57, 0.1);
+            border: 1px solid var(--border);
         }
 
         .day-half h4 {
-            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+            font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em;
             color: var(--gabon-vert); margin-bottom: 20px;
             display: flex; align-items: center; gap: 8px;
         }
@@ -379,7 +401,7 @@
 
         .day-item .check {
             width: 22px; height: 22px; min-width: 22px;
-            background: rgba(0, 151, 57, 0.1);
+            background: rgba(0, 151, 57, 0.08);
             border-radius: 6px;
             display: flex; align-items: center; justify-content: center;
             color: var(--gabon-vert); font-size: 0.75rem; margin-top: 2px;
@@ -395,22 +417,24 @@
 
         .project-card {
             background: var(--bg-card);
-            border: 1px solid rgba(0, 151, 57, 0.1);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 36px 28px;
-            transition: all 0.4s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
-        .project-card:hover {
-            border-color: rgba(0, 151, 57, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 32px rgba(0, 151, 57, 0.08);
+        @media (hover: hover) and (pointer: fine) {
+            .project-card:hover {
+                border-color: rgba(0, 151, 57, 0.25);
+                transform: translateY(-4px);
+                box-shadow: 0 8px 32px rgba(0, 151, 57, 0.06);
+            }
         }
 
-        .project-emoji { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+        .project-emoji { font-size: 2.5rem; margin-bottom: 16px; display: block; }
 
-        .project-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+        .project-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
 
         .project-card p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.7; }
 
@@ -421,50 +445,46 @@
         .project-tech {
             padding: 4px 10px; border-radius: 6px;
             font-size: 0.75rem; font-weight: 600;
-            background: rgba(0, 61, 165, 0.06);
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 61, 165, 0.05);
             color: var(--gabon-bleu);
-            border: 1px solid rgba(0, 61, 165, 0.15);
+            border: 1px solid rgba(0, 61, 165, 0.1);
         }
 
         /* === ROI COMPARISON === */
         .roi-grid {
             display: grid; grid-template-columns: 1fr 1fr;
             gap: 24px;
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 900px; margin: 0 auto;
         }
 
         .roi-card {
             background: var(--bg-card);
             border-radius: 16px;
             padding: 36px 28px;
-            border: 1px solid rgba(0,0,0,0.08);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
         .roi-card.highlight {
             border: 2px solid var(--gabon-vert);
-            box-shadow: 0 0 40px rgba(0, 151, 57, 0.1);
+            box-shadow: 0 0 40px rgba(0, 151, 57, 0.06);
             position: relative;
         }
 
         .roi-card .roi-label {
-            font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 20px;
+            font-size: 0.85rem; font-weight: 700;
+            letter-spacing: 0.02em; margin-bottom: 20px;
         }
 
         .roi-card .roi-label.bad { color: var(--danger); }
         .roi-card .roi-label.good { color: var(--gabon-vert); }
 
         .roi-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
-        .roi-card .roi-price { font-size: 2rem; font-weight: 900; margin-bottom: 20px; }
+        .roi-card .roi-price { font-size: 2rem; font-weight: 900; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
 
         .roi-card .roi-price.bad-price { color: var(--danger); }
-        .roi-card .roi-price.good-price {
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-bleu));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .roi-card .roi-price.good-price { color: var(--gabon-vert); }
 
         .roi-item {
             display: flex; align-items: flex-start; gap: 10px;
@@ -489,7 +509,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 60px rgba(0, 151, 57, 0.08);
+            box-shadow: 0 0 60px rgba(0, 151, 57, 0.06);
         }
 
         .pricing-card::before {
@@ -507,14 +527,14 @@
 
         .pricing-label {
             font-size: 0.9rem; color: var(--text-muted); font-weight: 600;
-            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 16px;
+            letter-spacing: 0.02em; margin-bottom: 16px;
         }
 
         .pricing-amount {
             font-size: 4rem; font-weight: 900; letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--gabon-vert), var(--gabon-bleu));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 8px;
+            color: var(--gabon-vert);
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
         }
 
         .pricing-currency {
@@ -529,14 +549,14 @@
         .pricing-feature {
             display: flex; align-items: center; gap: 12px;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(0, 151, 57, 0.08);
+            border-bottom: 1px solid rgba(0, 151, 57, 0.06);
         }
 
         .pricing-feature:last-child { border-bottom: none; }
 
         .pricing-feature .pf-icon {
             width: 24px; height: 24px; min-width: 24px;
-            background: rgba(0, 151, 57, 0.1);
+            background: rgba(0, 151, 57, 0.08);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: var(--gabon-vert); font-size: 0.7rem;
@@ -548,17 +568,17 @@
         .pricing-guarantee {
             margin-top: 24px;
             padding: 16px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 12px;
-            font-size: 0.9rem; color: #92700c;
+            font-size: 0.9rem; color: #7a5f0a;
         }
 
         .pricing-bonus {
             margin-top: 16px;
             padding: 16px;
-            background: rgba(0, 151, 57, 0.06);
-            border: 1px solid rgba(0, 151, 57, 0.2);
+            background: rgba(0, 151, 57, 0.05);
+            border: 1px solid rgba(0, 151, 57, 0.15);
             border-radius: 12px;
             font-size: 0.9rem; color: var(--gabon-vert);
         }
@@ -567,11 +587,10 @@
         .faq-list { max-width: 720px; margin: 0 auto; }
 
         .faq-item {
-            border: 1px solid rgba(0, 151, 57, 0.12);
+            border: 1px solid var(--border);
             border-radius: 12px;
             margin-bottom: 12px;
             overflow: hidden;
-            transition: all 0.3s;
             background: var(--bg-card);
         }
 
@@ -579,14 +598,16 @@
             padding: 20px 24px;
             cursor: pointer; font-weight: 600; font-size: 1rem;
             display: flex; justify-content: space-between; align-items: center;
-            transition: all 0.3s;
             color: var(--text-primary);
+            transition: background 0.2s ease;
         }
 
-        .faq-question:hover { background: rgba(0, 151, 57, 0.03); }
+        @media (hover: hover) and (pointer: fine) {
+            .faq-question:hover { background: rgba(0, 151, 57, 0.02); }
+        }
 
         .faq-arrow {
-            transition: transform 0.3s;
+            transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
             color: var(--gabon-vert);
             font-size: 0.8rem;
         }
@@ -594,7 +615,8 @@
         .faq-item.open .faq-arrow { transform: rotate(180deg); }
 
         .faq-answer {
-            max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .faq-item.open .faq-answer { max-height: 300px; }
@@ -615,15 +637,17 @@
             font-weight: 800; margin-bottom: 16px;
         }
 
+        .cta-final h2 .accent-word { color: var(--gabon-vert); }
+
         .cta-final p {
-            color: var(--text-secondary); font-size: 1.15rem;
+            color: var(--text-secondary); font-size: 1.05rem;
             max-width: 550px; margin: 0 auto 40px;
         }
 
         .places-counter {
             display: inline-flex; align-items: center; gap: 12px;
-            background: rgba(0, 61, 165, 0.06);
-            border: 1px solid rgba(0, 61, 165, 0.2);
+            background: rgba(0, 61, 165, 0.04);
+            border: 1px solid rgba(0, 61, 165, 0.12);
             padding: 12px 24px; border-radius: 50px;
             margin-bottom: 32px;
             font-size: 0.95rem; font-weight: 600; color: var(--gabon-bleu);
@@ -637,7 +661,7 @@
 
         /* === FOOTER === */
         footer {
-            border-top: 1px solid rgba(0, 151, 57, 0.12);
+            border-top: 1px solid var(--border);
             padding: 40px 0;
             text-align: center;
             color: var(--text-muted);
@@ -646,12 +670,14 @@
         }
 
         footer a { color: var(--gabon-bleu); text-decoration: none; }
-        footer a:hover { text-decoration: underline; }
+        @media (hover: hover) and (pointer: fine) {
+            footer a:hover { text-decoration: underline; }
+        }
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero h1 { letter-spacing: -1px; }
+            .hero h1 { letter-spacing: -0.5px; }
             .hero-stats { gap: 24px; flex-wrap: wrap; }
             .hero-stat .number { font-size: 2rem; }
             .programme { padding: 40px 24px; }
@@ -662,12 +688,13 @@
             section { padding: 64px 0; }
             .roi-grid { grid-template-columns: 1fr; }
             .promise-banner { padding: 32px 24px; }
+            .advantages-grid { grid-template-columns: 1fr; }
         }
 
         /* === SCROLL ANIMATIONS === */
         .reveal {
-            opacity: 0; transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            opacity: 0; transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .reveal.visible {
             opacity: 1; transform: translateY(0);
@@ -700,17 +727,17 @@
     <div class="container">
         <div class="hero-badge">
             <span class="dot"></span>
-            Terminale & Étudiants — Opportunité en or
+            Terminale & Étudiants - Opportunité en or
         </div>
-        <h1>Des compétences<br><span class="gradient">d'actualité en 72h</span></h1>
+        <h1>Des compétences<br><span class="accent-word">d'actualité en 72h</span></h1>
         <p class="hero-sub">
             Vous êtes en terminale ou à la fac ? <strong>C'est l'opportunité d'acquérir des compétences transversales</strong> que l'école n'enseigne pas :
-            créer une application, la déployer, la sécuriser, l'automatiser —
+            créer une application, la déployer, la sécuriser, l'automatiser,
             sur une infrastructure professionnelle clé en main.
         </p>
         <div class="hero-cta-group">
-            <a href="#inscription" class="btn-primary">⚡ Réserver — 5 places max</a>
-            <a href="#programme" class="btn-secondary">📅 Voir le programme</a>
+            <a href="#inscription" class="btn-primary">Réserver - 5 places max</a>
+            <a href="#programme" class="btn-secondary">Voir le programme</a>
         </div>
         <div class="hero-stats">
             <div class="hero-stat">
@@ -733,8 +760,8 @@
 <section id="promesse">
     <div class="container">
         <div class="promise-banner reveal">
-            <h3>🎯 L'école ne vous apprend pas ça. <span class="gradient" style="background:linear-gradient(135deg,var(--gabon-vert),var(--gabon-bleu));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Nous si.</span></h3>
-            <p>En terminale ou à la fac, on vous apprend la théorie. Ici, vous <strong>créez, déployez et opérez</strong> votre propre solution technique — avec des serveurs, des outils et un coach qui ne vous lâche pas. Des compétences que le marché recherche dès aujourd'hui.</p>
+            <h3>L'école ne vous apprend pas ça. <strong>Nous si.</strong></h3>
+            <p>En terminale ou à la fac, on vous apprend la théorie. Ici, vous <strong>créez, déployez et opérez</strong> votre propre solution technique, avec des serveurs, des outils et un coach qui ne vous lâche pas. Des compétences que le marché recherche dès aujourd'hui.</p>
         </div>
     </div>
 </section>
@@ -751,12 +778,12 @@
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🚀</div>
                 <h3>Résultat concret en 3 jours</h3>
-                <p>Repartez avec <span class="highlight">VOTRE application fonctionnelle</span>, hébergée, sécurisée et automatisée — pas juste un certificat. C'est un laboratoire intensif, pas un cours magistral.</p>
+                <p>Repartez avec <span class="highlight">VOTRE application fonctionnelle</span>, hébergée, sécurisée et automatisée, pas juste un certificat. C'est un laboratoire intensif, pas un cours magistral.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🎓</div>
                 <h3>Compétences d'actualité</h3>
-                <p>Déploiement, sécurité réseau, automatisation, IA — des <span class="highlight">compétences que le marché recherche maintenant</span>, pas dans 5 ans. Un avantage considérable pour un étudiant ou un bachelier.</p>
+                <p>Déploiement, sécurité réseau, automatisation, IA : des <span class="highlight">compétences que le marché recherche maintenant</span>, pas dans 5 ans. Un avantage considérable pour un étudiant ou un bachelier.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🎯</div>
@@ -766,7 +793,7 @@
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🖥️</div>
                 <h3>Infrastructure clé en main</h3>
-                <p>Serveurs dédiés, Docker, Nginx, SSL, Cloudflare, base de données — tout est déjà en place. <span class="highlight">Zero configuration, zero frais cachés.</span> Vous commencez directement sur du professionnel.</p>
+                <p>Serveurs dédiés, Docker, Nginx, SSL, Cloudflare, base de données : tout est déjà en place. <span class="highlight">Zero configuration, zero frais cachés.</span> Vous commencez directement sur du professionnel.</p>
             </div>
             <div class="advantage-card reveal">
                 <div class="advantage-icon">🔒</div>
@@ -791,21 +818,20 @@
 <section id="programme">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Programme intensif</div>
             <h2 class="section-title">72h pour tout changer</h2>
             <p class="section-desc">Chaque journée est conçue pour vous faire progresser concrètement. Du concept au déploiement en production.</p>
         </div>
         <div class="programme reveal">
             <div class="day-tabs">
-                <button class="day-tab active" onclick="showDay(1)">Jour 1 — Fondations</button>
-                <button class="day-tab" onclick="showDay(2)">Jour 2 — Construction</button>
-                <button class="day-tab" onclick="showDay(3)">Jour 3 — Production</button>
+                <button class="day-tab active" onclick="showDay(1)">Jour 1 - Fondations</button>
+                <button class="day-tab" onclick="showDay(2)">Jour 2 - Construction</button>
+                <button class="day-tab" onclick="showDay(3)">Jour 3 - Production</button>
             </div>
 
             <div class="day-content active" id="day-1">
                 <div class="day-block">
                     <div class="day-half">
-                        <h4><span class="icon">🌅</span> Matin — Architecture & Écosystème</h4>
+                        <h4><span class="icon">🌅</span> Matin - Architecture & Écosystème</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Comprendre l'architecture d'une application moderne</span>
@@ -824,7 +850,7 @@
                         </div>
                     </div>
                     <div class="day-half">
-                        <h4><span class="icon">☀️</span> Après-midi — Premier Déploiement</h4>
+                        <h4><span class="icon">☀️</span> Après-midi - Premier Déploiement</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Structure et architecture de votre application</span>
@@ -835,7 +861,7 @@
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span><strong>Premier déploiement en ligne</strong> — votre app est live</span>
+                            <span><strong>Premier déploiement en ligne</strong>, votre app est live</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
@@ -848,7 +874,7 @@
             <div class="day-content" id="day-2">
                 <div class="day-block">
                     <div class="day-half">
-                        <h4><span class="icon">🌅</span> Matin — Fonctionnalités Avancées</h4>
+                        <h4><span class="icon">🌅</span> Matin - Fonctionnalités Avancées</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Authentification et gestion des utilisateurs</span>
@@ -867,7 +893,7 @@
                         </div>
                     </div>
                     <div class="day-half">
-                        <h4><span class="icon">☀️</span> Après-midi — Projet Personnel</h4>
+                        <h4><span class="icon">☀️</span> Après-midi - Projet Personnel</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Construire votre application avec coaching</span>
@@ -891,14 +917,14 @@
             <div class="day-content" id="day-3">
                 <div class="day-block">
                     <div class="day-half">
-                        <h4><span class="icon">🌅</span> Matin — VPN & Automatisations</h4>
+                        <h4><span class="icon">🌅</span> Matin - VPN & Automatisations</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Créer et configurer votre propre VPN</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
-                            <span>Automatisations — emails, documents, workflows</span>
+                            <span>Automatisations : emails, documents, workflows</span>
                         </div>
                         <div class="day-item">
                             <div class="check">✓</div>
@@ -910,7 +936,7 @@
                         </div>
                     </div>
                     <div class="day-half">
-                        <h4><span class="icon">☀️</span> Après-midi — Mise en Production</h4>
+                        <h4><span class="icon">☀️</span> Après-midi - Mise en Production</h4>
                         <div class="day-item">
                             <div class="check">✓</div>
                             <span>Finalisation et déploiement en production</span>
@@ -938,7 +964,6 @@
 <section id="projets">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Ce que vous créerez</div>
             <h2 class="section-title">Projets réalisables</h2>
             <p class="section-desc">Des exemples concrets d'applications que vous serez capable de déployer pendant les 3 jours.</p>
         </div>
@@ -946,7 +971,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">🤖</span>
                 <h3>Chatbot WhatsApp IA</h3>
-                <p>Un agent conversationnel intelligent sur WhatsApp — prise de commandes, FAQ, réservations, support client automatisé pour votre business.</p>
+                <p>Un agent conversationnel intelligent sur WhatsApp : prise de commandes, FAQ, réservations, support client automatisé pour votre business.</p>
                 <div class="project-techs">
                     <span class="project-tech">WhatsApp API</span>
                     <span class="project-tech">IA</span>
@@ -957,7 +982,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">🌐</span>
                 <h3>Application Web complète</h3>
-                <p>Une application web avec authentification, base de données, tableau de bord — pour gérer un business, une école, une église ou tout organisme.</p>
+                <p>Une application web avec authentification, base de données, tableau de bord, pour gérer un business, une école, une église ou tout organisme.</p>
                 <div class="project-techs">
                     <span class="project-tech">Django</span>
                     <span class="project-tech">PostgreSQL</span>
@@ -968,7 +993,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">🔒</span>
                 <h3>VPN personnalisé</h3>
-                <p>Votre propre VPN avec navigation optimisée. Configuré spécifiquement pour votre opérateur et vos besoins — comme le font les vraies structures IT.</p>
+                <p>Votre propre VPN avec navigation optimisée. Configuré spécifiquement pour votre opérateur et vos besoins, comme le font les vraies structures IT.</p>
                 <div class="project-techs">
                     <span class="project-tech">SSH Tunnel</span>
                     <span class="project-tech">Proxy</span>
@@ -979,7 +1004,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">⚙️</span>
                 <h3>Automatisations intelligentes</h3>
-                <p>Automatisez vos emails, vos documents, vos workflows — gagnez des heures chaque semaine grâce à des processus professionnels qui tournent tout seuls.</p>
+                <p>Automatisez vos emails, vos documents, vos workflows. Gagnez des heures chaque semaine grâce à des processus professionnels qui tournent tout seuls.</p>
                 <div class="project-techs">
                     <span class="project-tech">Automatisation</span>
                     <span class="project-tech">n8n</span>
@@ -989,7 +1014,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">📱</span>
                 <h3>Application de service</h3>
-                <p>Une app de réservation, livraison ou gestion de stock — le type d'application dont les businesses locaux ont besoin au Gabon.</p>
+                <p>Une app de réservation, livraison ou gestion de stock, le type d'application dont les businesses locaux ont besoin au Gabon.</p>
                 <div class="project-techs">
                     <span class="project-tech">Full-stack</span>
                     <span class="project-tech">Auth</span>
@@ -1000,7 +1025,7 @@
             <div class="project-card reveal">
                 <span class="project-emoji">📄</span>
                 <h3>Outil IA de documents</h3>
-                <p>Un outil qui extrait, analyse et traite automatiquement vos documents grâce à l'OCR et l'IA — factures, contrats, formulaires.</p>
+                <p>Un outil qui extrait, analyse et traite automatiquement vos documents grâce à l'OCR et l'IA : factures, contrats, formulaires.</p>
                 <div class="project-techs">
                     <span class="project-tech">OCR</span>
                     <span class="project-tech">IA</span>
@@ -1016,7 +1041,6 @@
 <section id="roi">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Comparaison</div>
             <h2 class="section-title">Le calcul est simple</h2>
             <p class="section-desc">Comparez ce que vous obtenez avec notre bootcamp vs une formation classique.</p>
         </div>
@@ -1039,7 +1063,7 @@
                 <div class="roi-item"><span class="icon-check">✓</span> <span>Application déployée en production</span></div>
                 <div class="roi-item"><span class="icon-check">✓</span> <span>Infrastructure professionnelle incluse</span></div>
                 <div class="roi-item"><span class="icon-check">✓</span> <span>VPN + automatisations inclus</span></div>
-                <div class="roi-item"><span class="icon-check">✓</span> <span>5 places max — coaching individuel</span></div>
+                <div class="roi-item"><span class="icon-check">✓</span> <span>5 places max, coaching individuel</span></div>
                 <div class="roi-item"><span class="icon-check">✓</span> <span>Résultat garanti ou remboursement Jour 1</span></div>
                 <div class="roi-item"><span class="icon-check">✓</span> <span>Communauté + 1 mois accès serveurs</span></div>
             </div>
@@ -1051,7 +1075,6 @@
 <section id="tarif" class="pricing-section">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Investissement</div>
             <h2 class="section-title">Un prix, tout compris</h2>
             <p class="section-desc">Infrastructure + coaching + communauté. Zero frais caché. Zero surprise.</p>
         </div>
@@ -1059,7 +1082,7 @@
             <div class="pricing-popular">5 places</div>
             <div class="pricing-label">Bootcamp Ingénierie Applicative</div>
             <div class="pricing-amount">100 000</div>
-            <div class="pricing-currency">FCFA — 3 jours présentiel</div>
+            <div class="pricing-currency">FCFA - 3 jours présentiel</div>
             <div class="pricing-features">
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
@@ -1071,7 +1094,7 @@
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
-                    <span>Coaching sur-mesure — <strong>5 places maximum</strong></span>
+                    <span>Coaching sur-mesure, <strong>5 places maximum</strong></span>
                 </div>
                 <div class="pricing-feature">
                     <div class="pf-icon">✓</div>
@@ -1099,12 +1122,12 @@
                 </div>
             </div>
             <div class="pricing-guarantee">
-                🛡️ <strong>Garantie Jour 1</strong> — Si à la fin du premier jour vous n'avez pas déployé votre première architecture, remboursement intégral.
+                🛡️ <strong>Garantie Jour 1</strong> : Si à la fin du premier jour vous n'avez pas déployé votre première architecture, remboursement intégral.
             </div>
             <div class="pricing-bonus">
-                🎁 <strong>Bonus</strong> — 1 mois d'accès aux serveurs post-formation + intégration communauté à vie.
+                🎁 <strong>Bonus</strong> : 1 mois d'accès aux serveurs post-formation + intégration communauté à vie.
             </div>
-            <a href="#inscription" class="btn-primary" style="margin-top: 32px; display: inline-flex;">⚡ Réserver ma place</a>
+            <a href="#inscription" class="btn-primary" style="margin-top: 32px; display: inline-flex;">Réserver ma place</a>
         </div>
     </div>
 </section>
@@ -1113,8 +1136,7 @@
 <section id="faq">
     <div class="container">
         <div class="section-header reveal">
-            <div class="section-tag">Questions fréquentes</div>
-            <h2 class="section-title">Vous hésitez encore ?</h2>
+            <h2 class="section-title">Questions fréquentes</h2>
         </div>
         <div class="faq-list">
             <div class="faq-item">
@@ -1123,7 +1145,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">La formation est conçue pour les élèves de terminale et les étudiants, même sans expérience en programmation. Notre méthodologie d'ingénierie moderne vous permet de vous concentrer sur la conception et l'architecture — l'implémentation suit naturellement. Accessible aux débutants motivés, encadrés par un coach.</div>
+                    <div class="faq-answer-inner">La formation est conçue pour les élèves de terminale et les étudiants, même sans expérience en programmation. Notre méthodologie d'ingénierie moderne vous permet de vous concentrer sur la conception et l'architecture, l'implémentation suit naturellement. Accessible aux débutants motivés, encadrés par un coach.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1132,7 +1154,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Un ordinateur portable (Windows, Mac ou Linux) et une connexion internet. Tout le reste — serveurs, outils, infrastructure professionnelle — est déjà prêt pour vous. Zero configuration de votre côté.</div>
+                    <div class="faq-answer-inner">Un ordinateur portable (Windows, Mac ou Linux) et une connexion internet. Tout le reste, serveurs, outils, infrastructure professionnelle, est déjà prêt pour vous. Zero configuration de votre côté.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1159,7 +1181,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Les 100 000 FCFA couvrent la formation, l'infrastructure et 1 mois d'accès serveurs. L'hébergement continu et les services communautaires peuvent faire l'objet d'un abonnement optionnel — mais ce n'est jamais obligatoire pour continuer à utiliser votre application.</div>
+                    <div class="faq-answer-inner">Les 100 000 FCFA couvrent la formation, l'infrastructure et 1 mois d'accès serveurs. L'hébergement continu et les services communautaires peuvent faire l'objet d'un abonnement optionnel, mais ce n'est jamais obligatoire pour continuer à utiliser votre application.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1177,7 +1199,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">C'est même fait pour vous. Le monde du tech recrute sur les compétences, pas sur les diplômes. En 3 jours, vous acquérez des compétences transversales — déploiement, sécurité réseau, automatisation, IA — que 90 % des étudiants n'ont pas. C'est un avantage considérable pour un CV, un projet entrepreneurial, ou une poursuite d'études.</div>
+                    <div class="faq-answer-inner">C'est même fait pour vous. Le monde du tech recrute sur les compétences, pas sur les diplômes. En 3 jours, vous acquérez des compétences transversales (déploiement, sécurité réseau, automatisation, IA) que 90 % des étudiants n'ont pas. C'est un avantage considérable pour un CV, un projet entrepreneurial, ou une poursuite d'études.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1186,7 +1208,7 @@
                     <span class="faq-arrow">▼</span>
                 </div>
                 <div class="faq-answer">
-                    <div class="faq-answer-inner">Concevoir et déployer une application, sécuriser un réseau (VPN), automatiser des workflows, utiliser l'IA dans un projet concret, gérer une infrastructure serveur. Ce sont des compétences recherchées dans tous les secteurs — pas seulement l'informatique. Et elles ne s'obsolescent pas en 2 ans.</div>
+                    <div class="faq-answer-inner">Concevoir et déployer une application, sécuriser un réseau (VPN), automatiser des workflows, utiliser l'IA dans un projet concret, gérer une infrastructure serveur. Ce sont des compétences recherchées dans tous les secteurs, pas seulement l'informatique. Et elles ne s'obsolescent pas en 2 ans.</div>
                 </div>
             </div>
             <div class="faq-item">
@@ -1207,18 +1229,18 @@
     <div class="container">
         <div class="places-counter">
             <span class="pulse-dot"></span>
-            Plus que 5 places disponibles — Session limitée
+            Plus que 5 places disponibles - Session limitée
         </div>
-        <h2>Des compétences recherchées<br><span class="gradient" style="background:linear-gradient(135deg,var(--gabon-vert),var(--gabon-bleu));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">que l'école n'enseigne pas</span></h2>
-        <p>Application déployée. VPN configuré. Automatisations actives. Communauté à vie. L'opportunité de prendre une longueur d'avance — 5 places seulement.</p>
-        <a href="https://wa.me/241XXXXXXXX?text=Bonjour%2C%20je%20souhaite%20réserver%20ma%20place%20pour%20le%20Bootcamp%20Ingénierie%20Applicative%20%3A%20Développement%20%26%20Infrastructure" class="btn-primary" style="font-size:1.2rem;padding:18px 48px;" target="_blank">💬 Réserver via WhatsApp</a>
+        <h2>Des compétences recherchées<br><span class="accent-word">que l'école n'enseigne pas</span></h2>
+        <p>Application déployée. VPN configuré. Automatisations actives. Communauté à vie. L'opportunité de prendre une longueur d'avance, 5 places seulement.</p>
+        <a href="https://wa.me/241XXXXXXXX?text=Bonjour%2C%20je%20souhaite%20réserver%20ma%20place%20pour%20le%20Bootcamp%20Ingénierie%20Applicative%20%3A%20Développement%20%26%20Infrastructure" class="btn-primary" style="font-size:1.2rem;padding:18px 48px;" target="_blank">Réserver via WhatsApp</a>
     </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
     <div class="container">
-        <p>© 2026 Gosen Academy — Bootcamp Ingénierie Applicative & Infrastructure</p>
+        <p>© 2026 Gosen Academy - Bootcamp Ingénierie Applicative & Infrastructure</p>
         <p style="margin-top:8px;">Libreville, Gabon · <a href="mailto:ericdavy48@gmail.com">ericdavy48@gmail.com</a></p>
     </div>
 </footer>
@@ -1252,18 +1274,16 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     // Navbar scroll effect
-    let lastScroll = 0;
     window.addEventListener('scroll', () => {
         const navbar = document.querySelector('.navbar');
         const scroll = window.scrollY;
         if (scroll > 100) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.boxShadow = '0 1px 8px rgba(0,0,0,0.06)';
+            navbar.style.background = 'rgba(250, 251, 250, 0.98)';
+            navbar.style.boxShadow = '0 1px 8px rgba(0,0,0,0.04)';
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.92)';
+            navbar.style.background = 'rgba(250, 251, 250, 0.92)';
             navbar.style.boxShadow = 'none';
         }
-        lastScroll = scroll;
     });
 
     // Smooth scroll for anchor links
