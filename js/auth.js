@@ -1,11 +1,14 @@
 /* ============================================
    Bootcamp 2.0 — Auth & Espace Membre
-   API Express backend (replaces Supabase)
+   API Express backend
    ============================================ */
 
 const API_URL = 'https://bootcamp-api.filtreexpert.org';
+const CYBERSCHOOL_MOOV = 'https://sumb.cyberschool.ga/?productId=dhDw8HwvaoKyeTkJlWG0&operationAccountCode=ACC_6835C458B85FF&maison=moov&amount=100';
+const CYBERSCHOOL_AIRTEL = 'https://sumb.cyberschool.ga/?productId=dhDw8HwvaoKyeTkJlWG0&operationAccountCode=ACC_6835C64624E15&maison=airtel&amount=100';
 
 let currentUser = null;
+let merciCheckInterval = null;
 
 // Normalise un numero gabonais
 function normalizePhone(phone) {
@@ -68,6 +71,12 @@ function logout() {
 
 // Afficher le dashboard
 function showEspace(data) {
+  // Arreter le polling
+  if (merciCheckInterval) {
+    clearInterval(merciCheckInterval);
+    merciCheckInterval = null;
+  }
+
   document.getElementById('espace').style.display = '';
   document.getElementById('merci').style.display = 'none';
   document.getElementById('navEspace').style.display = '';
@@ -88,7 +97,6 @@ function showEspace(data) {
     statutEl.className = 'status-value' + (data.statut === 'confirmee' ? ' confirmed' : '');
   }
 
-  // Trigger reveal animations
   document.querySelectorAll('#espace .reveal, #espace .reveal-stagger').forEach(el => {
     el.classList.add('visible');
   });
@@ -104,15 +112,73 @@ function hideEspace() {
   document.getElementById('navEspace').style.display = 'none';
 }
 
-// Afficher la section merci
+// Afficher la section merci + auto-check
 function showMerci() {
   document.getElementById('merci').style.display = '';
   document.querySelectorAll('#merci .reveal, #merci .reveal-stagger').forEach(el => {
     el.classList.add('visible');
   });
+
+  // Pre-remplir avec le numero stocke
+  const savedPhone = localStorage.getItem('bootcamp_phone');
+  if (savedPhone) {
+    const merciPhone = document.getElementById('merci-phone');
+    if (merciPhone) merciPhone.value = savedPhone;
+  }
+
+  // Auto-check si on a un numero
+  const phoneToCheck = localStorage.getItem('bootcamp_pay_phone') || savedPhone;
+  if (phoneToCheck) {
+    const merciPhone = document.getElementById('merci-phone');
+    if (merciPhone && !merciPhone.value) merciPhone.value = phoneToCheck;
+    startMerciPolling(phoneToCheck);
+  }
+
   setTimeout(() => {
     document.getElementById('merci').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
+}
+
+// Polling automatique sur la page merci
+function startMerciPolling(phone) {
+  const merciSubmit = document.getElementById('merci-submit');
+  const merciError = document.getElementById('merci-error');
+
+  if (merciError) {
+    merciError.style.display = 'block';
+    merciError.className = 'form-success';
+    merciError.textContent = 'Verification du paiement en cours...';
+  }
+
+  // Premier check immediat
+  checkPayment(phone).then(result => {
+    if (result) {
+      login(phone);
+      return;
+    }
+  });
+
+  // Polling toutes les 5 secondes
+  let attempts = 0;
+  const maxAttempts = 24; // 2 minutes max
+
+  merciCheckInterval = setInterval(async () => {
+    attempts++;
+    const result = await checkPayment(phone);
+    if (result) {
+      clearInterval(merciCheckInterval);
+      merciCheckInterval = null;
+      login(phone);
+    } else if (attempts >= maxAttempts) {
+      clearInterval(merciCheckInterval);
+      merciCheckInterval = null;
+      if (merciError) {
+        merciError.style.display = 'block';
+        merciError.className = 'form-error';
+        merciError.textContent = 'Paiement pas encore detecte. Verifiez le numero ou reessayez dans quelques minutes.';
+      }
+    }
+  }, 5000);
 }
 
 // Modal connexion
@@ -125,7 +191,6 @@ function hideModal() {
   document.getElementById('loginModal').style.display = 'none';
 }
 
-// Afficher un message d'erreur
 function showError(elementId, message) {
   const el = document.getElementById(elementId);
   if (el) {
@@ -140,7 +205,7 @@ function hideError(elementId) {
   if (el) el.style.display = 'none';
 }
 
-// Auto-login au chargement si numero en memoire
+// Auto-login au chargement
 async function autoLogin() {
   const savedPhone = localStorage.getItem('bootcamp_phone');
   if (savedPhone) {
@@ -157,7 +222,6 @@ async function autoLogin() {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
-  // Hash routing
   const hash = window.location.hash;
   if (hash === '#merci') {
     showMerci();
@@ -165,7 +229,34 @@ document.addEventListener('DOMContentLoaded', () => {
     showModal();
   }
 
-  // Bouton merci-submit
+  // === Boutons de paiement : stocker le numero avant redirection ===
+  const payPhone = document.getElementById('pay-phone');
+  const btnMoov = document.getElementById('btn-moov');
+  const btnAirtel = document.getElementById('btn-airtel');
+
+  if (btnMoov) {
+    btnMoov.addEventListener('click', (e) => {
+      e.preventDefault();
+      const phone = payPhone ? payPhone.value.trim() : '';
+      if (phone) {
+        localStorage.setItem('bootcamp_pay_phone', normalizePhone(phone) || phone);
+      }
+      window.open(CYBERSCHOOL_MOOV, '_blank');
+    });
+  }
+
+  if (btnAirtel) {
+    btnAirtel.addEventListener('click', (e) => {
+      e.preventDefault();
+      const phone = payPhone ? payPhone.value.trim() : '';
+      if (phone) {
+        localStorage.setItem('bootcamp_pay_phone', normalizePhone(phone) || phone);
+      }
+      window.open(CYBERSCHOOL_AIRTEL, '_blank');
+    });
+  }
+
+  // === Page Merci : soumission manuelle ===
   const merciSubmit = document.getElementById('merci-submit');
   if (merciSubmit) {
     merciSubmit.addEventListener('click', async () => {
@@ -175,18 +266,20 @@ document.addEventListener('DOMContentLoaded', () => {
         showError('merci-error', 'Veuillez entrer votre numero de telephone.');
         return;
       }
+      localStorage.setItem('bootcamp_pay_phone', normalizePhone(phone) || phone);
       merciSubmit.disabled = true;
       merciSubmit.textContent = 'Connexion...';
       const success = await login(phone);
       merciSubmit.disabled = false;
       merciSubmit.textContent = 'Acceder a mon espace';
       if (!success) {
-        showError('merci-error', 'Aucun paiement trouve pour ce numero. Verifiez le numero utilise lors du paiement.');
+        // Commencer le polling
+        startMerciPolling(phone);
       }
     });
   }
 
-  // Bouton login-submit
+  // === Modal connexion ===
   const loginSubmit = document.getElementById('login-submit');
   if (loginSubmit) {
     loginSubmit.addEventListener('click', async () => {
@@ -202,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loginSubmit.disabled = false;
       loginSubmit.textContent = 'Connexion';
       if (!success) {
-        showError('login-error', 'Aucun paiement trouve pour ce numero. Verifiez le numero utilise lors du paiement.');
+        showError('login-error', 'Aucun paiement trouve pour ce numero.');
       }
     });
   }
@@ -219,7 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
     modalClose.addEventListener('click', hideModal);
   }
 
-  // Click overlay to close modal
   const modalOverlay = document.getElementById('loginModal');
   if (modalOverlay) {
     modalOverlay.addEventListener('click', (e) => {
