@@ -323,6 +323,12 @@ a:hover {
   box-shadow: var(--shadow-accent);
 }
 
+.btn-primary[style*="gold"]:hover,
+.btn-primary.airtel:hover {
+  background: var(--gold-light) !important;
+  box-shadow: var(--shadow-gold);
+}
+
 .btn-secondary {
   display: inline-flex;
   align-items: center;
