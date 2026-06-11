@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -27,6 +28,7 @@
         <li><a href="#tarif">Tarif</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#tarif" class="nav-cta">Reserver</a></li>
+        <li><a href="#espace" class="nav-cta nav-espace" id="navEspace" style="display:none;">Mon espace</a></li>
       </ul>
       <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
     </div>
@@ -289,6 +291,159 @@
     </div>
   </section>
 
+  <!-- ============================================
+       SECTION MERCI (apres paiement)
+       ============================================ -->
+  <section class="section merci" id="merci" style="display:none;">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Paiement</div>
+        <h2 class="section-title">Merci pour votre inscription !</h2>
+        <p class="section-subtitle">Entrez le numero de telephone utilise pour le paiement afin d'acceder a votre espace.</p>
+      </div>
+
+      <div class="merci-form reveal" style="margin-top:32px; max-width:420px;">
+        <div class="form-group">
+          <label for="merci-phone" class="form-label">Numero de telephone</label>
+          <input type="tel" id="merci-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel">
+        </div>
+        <button id="merci-submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:12px;">
+          Acceder a mon espace
+        </button>
+        <div id="merci-error" class="form-error" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ESPACE MEMBRE (dashboard)
+       ============================================ -->
+  <section class="section espace" id="espace" style="display:none;">
+    <div class="container">
+      <div class="espace-header">
+        <div>
+          <div class="section-label">Votre espace</div>
+          <h2 class="section-title" id="espace-welcome">Bienvenue !</h2>
+        </div>
+        <button id="logout-btn" class="btn-secondary" style="font-size:0.85rem;padding:8px 16px;">Deconnexion</button>
+      </div>
+
+      <div class="espace-grid reveal-stagger" style="margin-top:40px;">
+        <!-- Programme detaille -->
+        <div class="espace-card">
+          <h3 class="espace-card-title">Programme complet</h3>
+          <div class="espace-schedule">
+            <div class="schedule-day">
+              <div class="schedule-day-num">Jour 01 - Fondations</div>
+              <ul class="schedule-items">
+                <li>09h00 : Accueil et installation</li>
+                <li>09h30 : Architecture applicative</li>
+                <li>11h00 : Environnement professionnel</li>
+                <li>14h00 : Premier deploiement</li>
+                <li>16h00 : Git et collaboration</li>
+                <li>17h30 : Recap et Q&A</li>
+              </ul>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-num">Jour 02 - Construction</div>
+              <ul class="schedule-items">
+                <li>09h00 : Fonctionnalites avancees</li>
+                <li>10h30 : Base de donnees</li>
+                <li>13h30 : Integration IA</li>
+                <li>15h00 : Tests et qualite</li>
+                <li>16h30 : Workshop pratique</li>
+                <li>17h30 : Recap et Q&A</li>
+              </ul>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-num">Jour 03 - Production</div>
+              <ul class="schedule-items">
+                <li>09h00 : VPN securise</li>
+                <li>10h30 : Automatisations</li>
+                <li>13h30 : Mise en production</li>
+                <li>15h00 : Optimisation et monitoring</li>
+                <li>16h00 : Lancement officiel</li>
+                <li>17h00 : Certification et cloture</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist preparation -->
+        <div class="espace-card">
+          <h3 class="espace-card-title">Checklist de preparation</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><input type="checkbox" id="chk-laptop"><label for="chk-laptop">Laptop charge (Windows, Mac ou Linux)</label></li>
+            <li class="checklist-item"><input type="checkbox" id="chk-vscode"><label for="chk-vscode">VS Code installe</label></li>
+            <li class="checklist-item"><input type="checkbox" id="chk-git"><label for="chk-git">Git installe</label></li>
+            <li class="checklist-item"><input type="checkbox" id="ssh"><label for="ssh">Cle SSH configuree</label></li>
+            <li class="checklist-item"><input type="checkbox" id="chk-terminal"><label for="chk-terminal">Terminal fonctionnel (bash ou PowerShell)</label></li>
+            <li class="checklist-item"><input type="checkbox" id="chk-navigateur"><label for="chk-navigateur">Navigateur moderne (Chrome ou Firefox)</label></li>
+          </ul>
+        </div>
+
+        <!-- Liens utiles -->
+        <div class="espace-card">
+          <h3 class="espace-card-title">Liens et ressources</h3>
+          <ul class="espace-links">
+            <li>
+              <a href="https://wa.me/214077045354?text=Bonjour%2C%20je%20suis%20inscrit%20au%20bootcamp" target="_blank" rel="noopener" class="espace-link-item">
+                <span class="espace-link-icon">&#128172;</span>
+                Groupe WhatsApp prive
+              </a>
+            </li>
+            <li>
+              <a href="#" class="espace-link-item" id="link-servers">
+                <span class="espace-link-icon">&#127760;</span>
+                Acces serveurs (bientot disponible)
+              </a>
+            </li>
+            <li>
+              <a href="#" class="espace-link-item" id="link-vpn">
+                <span class="espace-link-icon">&#128274;</span>
+                Configuration VPN (bientot disponible)
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Statut paiement -->
+        <div class="espace-card">
+          <h3 class="espace-card-title">Mon inscription</h3>
+          <div id="espace-status" class="espace-status">
+            <div class="status-row">
+              <span class="status-label">Statut</span>
+              <span class="status-value" id="espace-statut">Confirme</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Telephone</span>
+              <span class="status-value" id="espace-phone">-</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Montant</span>
+              <span class="status-value">100 000 FCFA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal connexion (visible depuis la landing) -->
+  <div class="modal-overlay" id="loginModal" style="display:none;">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Fermer">&times;</button>
+      <h2 class="modal-title">Acceder a mon espace</h2>
+      <p class="modal-subtitle">Entrez le numero de telephone utilise pour le paiement.</p>
+      <div class="form-group">
+        <label for="login-phone" class="form-label">Numero de telephone</label>
+        <input type="tel" id="login-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel">
+      </div>
+      <button id="login-submit" class="btn-primary" style="width:100%;justify-content:center;">Connexion</button>
+      <div id="login-error" class="form-error" style="display:none;"></div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -296,6 +451,7 @@
     </div>
   </footer>
 
+  <script src="js/auth.js"></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

@@ -135,4 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
     navToggle.setAttribute('aria-expanded', String(isOpen));
     navToggle.innerHTML = isOpen ? '&#10005;' : '&#9776;';
   });
+
+  // Hash routing for #merci and #espace
+  // These are handled by auth.js, but we listen for hash changes here too
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash;
+    if (hash === '#merci') {
+      // Handled by auth.js
+    }
+  });
 });
