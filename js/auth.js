@@ -97,6 +97,9 @@ function showEspace(data) {
     statutEl.className = 'status-value' + (data.statut === 'confirmee' ? ' confirmed' : '');
   }
 
+  // Charger le contenu dynamique
+  loadContent();
+
   document.querySelectorAll('#espace .reveal, #espace .reveal-stagger').forEach(el => {
     el.classList.add('visible');
   });
@@ -104,6 +107,59 @@ function showEspace(data) {
   setTimeout(() => {
     document.getElementById('espace').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
+}
+
+// Charger le contenu de formation depuis l'API
+async function loadContent() {
+  const container = document.getElementById('content-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch(`${API_URL}/api/content`);
+    if (!res.ok) {
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Contenu bientot disponible</p>';
+      return;
+    }
+    const content = await res.json();
+
+    const dayNames = { 1: 'Jour 01 - Fondations', 2: 'Jour 02 - Construction', 3: 'Jour 03 - Production' };
+    const typeIcons = { text: '&#128196;', link: '&#128279;', document: '&#128209;', video: '&#127909;' };
+    const typeLabels = { text: 'Texte', link: 'Lien', document: 'Document', video: 'Video' };
+
+    let hasContent = false;
+    let html = '<div class="espace-schedule">';
+
+    for (let day = 1; day <= 3; day++) {
+      const items = content[day] || [];
+      if (items.length === 0) continue;
+      hasContent = true;
+
+      html += `<div class="schedule-day">`;
+      html += `<div class="schedule-day-num">${dayNames[day]}</div>`;
+      html += `<ul class="schedule-items">`;
+
+      items.forEach(item => {
+        if (item.type === 'text') {
+          html += `<li>${item.title}${item.description ? ': ' + item.description : ''}</li>`;
+        } else {
+          html += `<li><a href="${item.content_url || '#'}" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">${typeIcons[item.type] || ''} ${item.title}</a>${item.description ? ' - ' + item.description : ''}</li>`;
+        }
+      });
+
+      html += `</ul></div>`;
+    }
+
+    html += '</div>';
+
+    if (!hasContent) {
+      html = '<p style="color:var(--text-muted);font-size:0.9rem;">Le contenu sera disponible prochainement</p>';
+    }
+
+    container.innerHTML = html;
+  } catch (err) {
+    console.error('Error loading content:', err);
+    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Contenu bientot disponible</p>';
+  }
 }
 
 // Cacher le dashboard
