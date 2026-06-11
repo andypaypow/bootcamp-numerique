@@ -1,15 +1,13 @@
 /* ============================================
    Bootcamp 2.0 — Auth & Espace Membre
-   Supabase-based phone authentication
+   API Express backend (replaces Supabase)
    ============================================ */
 
-const SUPABASE_URL = 'https://khwizksacgnwjdvsyqkn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtod2l6a3NhY2dud2pkdnN5cWtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDQzOTcsImV4cCI6MjA5Njc4MDM5N30.aJfghLH_f1j6HHbHZfNwxqXSa-kav32sfS1GGaVcCiQ';
+const API_URL = 'https://bootcamp-api.filtreexpert.org';
 
-let supabase = null;
 let currentUser = null;
 
-// Normalise un numero gabonais : +241/00241/241/0XX/XX -> 0XXXXXXXX
+// Normalise un numero gabonais
 function normalizePhone(phone) {
   if (!phone) return null;
   let cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
@@ -21,68 +19,29 @@ function normalizePhone(phone) {
   return cleaned || null;
 }
 
-// Initialiser Supabase
-function initSupabase() {
-  if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  } else {
-    console.warn('Supabase JS not loaded');
-  }
-}
-
 // Verifier si un numero a un paiement confirme
 async function checkPayment(phone) {
-  if (!supabase) {
-    console.warn('Supabase not initialized');
-    return null;
-  }
-
   const normalized = normalizePhone(phone);
   if (!normalized) return null;
 
-  // Chercher dans les inscriptions avec statut confirmee
-  const { data: inscription, error: inscError } = await supabase
-    .from('inscriptions')
-    .select('id, nom_complet, telephone_normalized, statut')
-    .eq('telephone_normalized', normalized)
-    .maybeSingle();
-
-  if (inscError) {
-    console.error('Error fetching inscription:', inscError);
+  try {
+    const res = await fetch(`${API_URL}/api/check?phone=${encodeURIComponent(normalized)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.found) {
+      return {
+        phone: data.telephone || normalized,
+        nom: data.nom || null,
+        statut: data.statut || 'confirmee',
+        montant: data.montant || null,
+        source: data.source || null,
+      };
+    }
+    return null;
+  } catch (err) {
+    console.error('Error checking payment:', err);
     return null;
   }
-
-  // Chercher dans les payments aussi (si pas trouve dans inscriptions)
-  if (!inscription) {
-    const { data: payments, error: payError } = await supabase
-      .from('payments')
-      .select('id, telephone_normalized, statut, montant, source')
-      .eq('telephone_normalized', normalized)
-      .eq('statut', 'succes')
-      .limit(1);
-
-    if (payError) {
-      console.error('Error fetching payments:', payError);
-      return null;
-    }
-
-    if (payments && payments.length > 0) {
-      return { phone: normalized, statut: 'confirmee', source: 'payment' };
-    }
-
-    return null;
-  }
-
-  if (inscription.statut === 'confirmee' || inscription.statut === 'en_attente_paiement') {
-    return {
-      phone: normalized,
-      nom: inscription.nom_complet,
-      statut: inscription.statut,
-      source: 'inscription'
-    };
-  }
-
-  return null;
 }
 
 // Connexion
@@ -113,7 +72,6 @@ function showEspace(data) {
   document.getElementById('merci').style.display = 'none';
   document.getElementById('navEspace').style.display = '';
 
-  // Remplir les infos
   const welcomeEl = document.getElementById('espace-welcome');
   const phoneEl = document.getElementById('espace-phone');
   const statutEl = document.getElementById('espace-statut');
@@ -135,7 +93,6 @@ function showEspace(data) {
     el.classList.add('visible');
   });
 
-  // Scroll to espace
   setTimeout(() => {
     document.getElementById('espace').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
@@ -178,15 +135,6 @@ function showError(elementId, message) {
   }
 }
 
-function showSuccess(elementId, message) {
-  const el = document.getElementById(elementId);
-  if (el) {
-    el.textContent = message;
-    el.style.display = 'block';
-    el.className = 'form-success';
-  }
-}
-
 function hideError(elementId) {
   const el = document.getElementById(elementId);
   if (el) el.style.display = 'none';
@@ -209,8 +157,6 @@ async function autoLogin() {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
-  initSupabase();
-
   // Hash routing
   const hash = window.location.hash;
   if (hash === '#merci') {
