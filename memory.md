@@ -32,17 +32,20 @@ Landing page statique pour le Bootcamp 2.0. Hebergee sur GitHub Pages avec domai
 | .nojekyll | Empeche Jekyll | OK |
 
 ## Liens
-- **Cyberschool** : URL placeholder (href="#CYBERSCHOOL_URL")
-- **WhatsApp** : https://wa.me/241XXXXXXXX (a remplacer)
+- **Cyberschool Moov** : https://sumb.cyberschool.ga/?productId=dhDw8HwvaoKyeTkJlWG0&operationAccountCode=ACC_6835C458B85FF&maison=moov&amount=100
+- **Cyberschool Airtel** : https://sumb.cyberschool.ga/?productId=dhDw8HwvaoKyeTkJlWG0&operationAccountCode=ACC_6835C64624E15&maison=airtel&amount=100
+- **WhatsApp** : https://wa.me/214077045354
 - **Email** : ericdavy48@gmail.com
 
 ## Historique
 - Version Django (branche dev) : Django 4.2 + PostgreSQL + Docker, port VPS 9200
 - Migration statique : juin 2026
+- VPS nettoye : conteneurs bootcamp supprimes, Nginx config supprimee, port 9200 ferme
 
 ## Taches Restantes
-- [ ] Configurer Cloudflare DNS (CNAME -> andypaypow.github.io)
-- [ ] Nettoyer le VPS (conteneurs Docker, Nginx, port 9200)
-- [ ] Configurer l'URL Cyberschool reelle
-- [ ] Remplacer le numero WhatsApp placeholder
+- [x] Configurer Cloudflare DNS (CNAME -> andypaypow.github.io)
+- [x] Nettoyer le VPS (conteneurs Docker, Nginx, port 9200)
+- [x] Configurer les URLs Cyberschool
+- [x] Remplacer le numero WhatsApp
+- [ ] Activer HTTPS force sur GitHub Pages
 - [ ] Tester mobile + desktop
