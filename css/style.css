@@ -171,6 +171,18 @@ a:hover {
   transform: translateY(-1px);
 }
 
+.nav-link-login {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color var(--duration) var(--ease);
+  cursor: pointer;
+}
+
+.nav-link-login:hover {
+  color: var(--accent-light);
+}
+
 .nav-mobile-toggle {
   display: none;
   background: none;

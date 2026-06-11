@@ -26,8 +26,9 @@
         <li><a href="#programme">Programme</a></li>
         <li><a href="#tarif">Tarif</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#tarif" class="nav-cta">Reserver</a></li>
         <li><a href="#espace" class="nav-cta nav-espace" id="navEspace" style="display:none;">Mon espace</a></li>
+        <li><a href="#espace" class="nav-link-login" id="navLogin">Connexion</a></li>
+        <li><a href="#tarif" class="nav-cta">Reserver</a></li>
       </ul>
       <button class="nav-mobile-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
     </div>
@@ -198,7 +199,7 @@
             </ul>
 
             <div class="pricing-ctas" style="flex-direction:column;gap:8px;">
-              <input type="tel" id="pay-phone" class="form-input" placeholder="Votre numero de telephone" style="text-align:center;" required>
+              <input type="text" inputmode="tel" id="pay-phone" class="form-input" placeholder="Votre numero de telephone" style="text-align:center;font-size:16px;" autocomplete="tel" required>
               <a href="#" id="btn-moov" class="btn-primary" target="_blank" rel="noopener">Moov Money</a>
               <a href="#" id="btn-airtel" class="btn-primary" style="background:var(--gold);" target="_blank" rel="noopener">Airtel Money</a>
             </div>
@@ -305,7 +306,7 @@
       <div class="merci-form reveal" style="margin-top:32px; max-width:420px;">
         <div class="form-group">
           <label for="merci-phone" class="form-label">Numero de telephone</label>
-          <input type="tel" id="merci-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel">
+          <input type="text" inputmode="tel" id="merci-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel" style="font-size:16px;">
         </div>
         <button id="merci-submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:12px;">
           Acceder a mon espace
@@ -405,7 +406,7 @@
       <p class="modal-subtitle">Entrez le numero de telephone utilise pour le paiement.</p>
       <div class="form-group">
         <label for="login-phone" class="form-label">Numero de telephone</label>
-        <input type="tel" id="login-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel">
+        <input type="text" inputmode="tel" id="login-phone" class="form-input" placeholder="074XXXXXX" autocomplete="tel" style="font-size:16px;">
       </div>
       <button id="login-submit" class="btn-primary" style="width:100%;justify-content:center;">Connexion</button>
       <div id="login-error" class="form-error" style="display:none;"></div>

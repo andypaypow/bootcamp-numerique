@@ -67,6 +67,11 @@ function logout() {
   localStorage.removeItem('bootcamp_phone');
   localStorage.removeItem('bootcamp_statut');
   hideEspace();
+  // Afficher le lien Connexion, cacher Mon espace
+  const navLogin = document.getElementById('navLogin');
+  const navEspace = document.getElementById('navEspace');
+  if (navLogin) navLogin.style.display = '';
+  if (navEspace) navEspace.style.display = 'none';
 }
 
 // Afficher le dashboard
@@ -80,6 +85,9 @@ function showEspace(data) {
   document.getElementById('espace').style.display = '';
   document.getElementById('merci').style.display = 'none';
   document.getElementById('navEspace').style.display = '';
+  // Cacher le lien Connexion quand connecte
+  const navLogin = document.getElementById('navLogin');
+  if (navLogin) navLogin.style.display = 'none';
 
   const welcomeEl = document.getElementById('espace-welcome');
   const phoneEl = document.getElementById('espace-phone');
@@ -385,6 +393,15 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         showModal();
       }
+    });
+  }
+
+  // Nav login link (always visible when not connected)
+  const navLogin = document.getElementById('navLogin');
+  if (navLogin) {
+    navLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      showModal();
     });
   }
 
